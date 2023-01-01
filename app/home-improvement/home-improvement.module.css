@@ -1,22 +1,70 @@
-.masonryGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 2rem;
+/* Styles for the home improvement section */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
 }
 
 @media (min-width: 768px) {
-    .masonryGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+  .gridContainer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1024px) {
-    .masonryGrid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+  .gridContainer {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
-.masonryItem {
-    display: flex;
-    height: 100%;
+.card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:transform hover:scale-105;
+}
+
+.imageWrapper {
+  @apply relative h-48 w-full;
+}
+
+.image {
+  @apply object-cover;
+}
+
+.content {
+  @apply p-4;
+}
+
+.title {
+  @apply text-lg font-semibold mb-2;
+}
+
+.description {
+  @apply text-gray-600 text-sm;
+}
+
+.beforeAfter {
+  @apply relative aspect-[16/9] w-full overflow-hidden rounded-lg;
+}
+
+.beforeAfterSlider {
+  @apply absolute inset-0 w-full h-full;
+}
+
+.sliderHandle {
+  @apply absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize;
+}
+
+.sliderButton {
+  @apply absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center;
+}
+
+.form {
+  @apply space-y-4 max-w-md mx-auto mt-8;
+}
+
+.submitButton {
+  @apply w-full bg-primary text-white py-2 rounded-md hover:bg-primary/90 transition-colors;
 } 

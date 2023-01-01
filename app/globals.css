@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Ojuju:wght@200..800&display=swap');
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -10,7 +12,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 201 96% 32%;
+    --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -22,9 +24,15 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 201 96% 32%;
-    --radius: 0.75rem;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
   }
+
+  /* Apply Ojuju font to all headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Ojuju', sans-serif !important;
+  }
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -32,7 +40,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 201 96% 32%;
+    --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -44,7 +52,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 224.3 76.3% 48%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -53,14 +61,11 @@
   }
 
   body {
-    @apply text-foreground bg-background;
+    @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-raleway), system-ui, sans-serif;
-    font-weight: 600;
+    font-family: var(--font-raleway);
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
@@ -177,4 +182,120 @@
 ::selection {
   background: rgba(14, 165, 233, 0.2);
   color: inherit;
+}
+
+.font-ojuju {
+  font-family: 'Ojuju', sans-serif;
+}
+
+@layer utilities {
+  /* Container styles */
+  .container-max {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 1024px) {
+    .container-max {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  .container-wide {
+    width: 100%;
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 1024px) {
+    .container-wide {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  /* Header heights */
+  .mobile-header-height {
+    height: 116px; /* Banner (24px) + Main Header (56px) + Search (36px) */
+  }
+
+  .desktop-header-height {
+    height: 80px; /* Banner (24px) + Main Header (56px) */
+  }
+
+  /* Content spacing */
+  .content-margin {
+    margin-top: 80px; /* Match desktop header height */
+  }
+
+  @media (max-width: 1024px) {
+    .content-margin {
+      margin-top: 116px; /* Match mobile header height */
+    }
+  }
+
+  /* Prevent horizontal scroll */
+  .no-horizontal-scroll {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .header-container {
+    @apply w-screen max-w-[100vw] overflow-x-hidden;
+  }
+  
+  .mobile-header {
+    @apply flex flex-col w-full;
+  }
+  
+  .mobile-banner {
+    @apply h-5 w-full bg-[#E4A853] flex items-center justify-center;
+  }
+  
+  .mobile-main {
+    @apply w-full border-b border-gray-200;
+  }
+  
+  .mobile-top-row {
+    @apply flex items-center justify-between h-7 px-2 w-full;
+  }
+  
+  .mobile-search {
+    @apply px-2 py-1 w-full;
+  }
+
+  .max-container {
+    @apply max-w-[2000px] mx-auto px-4;
+  }
+}
+
+/* Reset body styles */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Content spacing */
+main {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Ensure proper box sizing */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }

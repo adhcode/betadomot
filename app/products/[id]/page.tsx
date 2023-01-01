@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { type Product, getProductById, getRelatedProducts } from '@/data/products'
+import { getProductById, getRelatedProducts } from '@/data/products'
+import { Product } from '@/types/product'
 import { PageHeader } from '@/components/ui/page-header'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -93,7 +94,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                         <div className="space-y-4">
                             <h3 className="font-semibold text-lg">Key Features</h3>
                             <ul className="grid grid-cols-2 gap-2">
-                                {product.features.map((feature, index) => (
+                                {product.features.map((feature: string, index: number) => (
                                     <li key={index} className="flex items-center gap-2">
                                         <Check className="h-5 w-5 text-green-500" />
                                         <span className="text-gray-600">{feature}</span>
@@ -121,7 +122,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                         <h3 className="font-semibold mb-3">Highlights</h3>
                         {product.details && (
                             <ul className="space-y-2">
-                                {product.details.highlights.map((highlight, index) => (
+                                {product.details.highlights.map((highlight: string, index: number) => (
                                     <li key={index} className="flex items-center gap-2">
                                         <Check className="h-4 w-4 text-green-500" />
                                         <span>{highlight}</span>
@@ -139,7 +140,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                                     <span className="text-gray-600 capitalize">
                                         {key.replace(/([A-Z])/g, ' $1').trim()}
                                     </span>
-                                    <span className="font-medium">{value}</span>
+                                    <span className="font-medium">{value as string}</span>
                                 </div>
                             ))}
                         </div>

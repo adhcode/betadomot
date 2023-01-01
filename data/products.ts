@@ -16,31 +16,7 @@ export interface Product {
     subCategory: string
     image: string
     efficiency?: ProductEfficiency
-    specs: {
-        capacity?: string
-        type?: string
-        efficiency?: string
-        warranty?: string
-        wattage?: string
-        power?: string
-        coolant?: string
-        coverage?: string
-        panels?: string
-        battery?: string
-        voltage?: string
-        cycles?: string
-        resolution?: string
-        nightVision?: string
-        storage?: string
-        outlets?: string
-        protection?: string
-        monitoring?: string
-        lumens?: string
-        color?: string
-        lifespan?: string
-        connectivity?: string
-        [key: string]: string | undefined
-    }
+    specs: Record<string, string | number>
     features: string[]
     relatedCategories: string[] // For recommending in learn pages
     savings?: string
@@ -53,8 +29,6 @@ export interface Product {
     }
     relatedProducts?: string[]
     stock?: number
-    tags: string[]
-    slug: string
 }
 
 // Mock products data - will be replaced with database data
@@ -85,9 +59,7 @@ export const products: Product[] = [
             "Auto Restart",
             "Timer Function"
         ],
-        relatedCategories: ["temperature", "energy-savings"],
-        tags: ["cooling", "energy-efficient", "smart-control"],
-        slug: "1-5hp-inverter-split-ac"
+        relatedCategories: ["temperature", "energy-savings"]
     },
     {
         id: "inv-1",
@@ -109,33 +81,52 @@ export const products: Product[] = [
             "Mobile Monitoring",
             "Overload Protection"
         ],
-        relatedCategories: ["backup-power", "solar-power", "energy-savings"],
-        tags: ["power", "inverter", "solar-compatible"],
-        slug: "5kva-hybrid-inverter"
+        relatedCategories: ["backup-power", "solar-power", "energy-savings"]
     },
     {
         id: 'luminous-5kva-inverter',
         name: 'Luminous 5KVA Inverter',
+        description: 'High-performance inverter perfect for homes and small offices',
         price: 450000,
-        description: 'High-capacity inverter for homes and offices',
         category: 'power',
         subCategory: 'inverter',
-        image: '/products/inverter-2.jpg',
-        specs: {
-            capacity: '5KVA',
-            type: 'Pure Sine Wave',
-            efficiency: '98%',
-            warranty: '2 years'
-        },
+        image: '/products/inverter-1.jpg',
+        rating: 4.8,
         features: [
             'Pure Sine Wave Output',
             'LCD Display',
             'Intelligent Battery Management',
             'Overload Protection'
         ],
-        relatedCategories: ['backup-power'],
-        tags: ['power', 'inverter', 'energy-savings'],
-        slug: 'luminous-5kva-inverter'
+        specs: {
+            capacity: '5KVA',
+            voltage: '24V',
+            efficiency: '98%'
+        },
+        relatedCategories: ['backup-power', 'inverters'],
+        savings: '₦25,000/month',
+        specifications: {
+            capacity: '5KVA',
+            voltage: '24V',
+            efficiency: '98%',
+            chargingCurrent: '60A',
+            warranty: '2 years'
+        },
+        details: {
+            overview: 'The Luminous 5KVA Inverter is designed for Nigerian homes...',
+            highlights: [
+                'Fast charging technology',
+                'Wide operating temperature range',
+                'Compatible with all battery types'
+            ],
+            technicalDetails: [
+                'Input Voltage: 140V-270V AC',
+                'Output Voltage: 220V ± 2%',
+                'Frequency: 50Hz ± 0.5Hz'
+            ]
+        },
+        relatedProducts: ['tubular-battery-200ah', 'smart-battery-monitor'],
+        stock: 15
     },
     {
         id: 'solar-2kw-package',
@@ -174,9 +165,7 @@ export const products: Product[] = [
         },
         relatedProducts: ['smart-solar-monitor', 'power-optimizer'],
         stock: 5,
-        relatedCategories: ['solar-power', 'backup-power', 'energy-savings'],
-        tags: ['power', 'solar', 'energy-savings'],
-        slug: '2kw-complete-solar-system'
+        relatedCategories: ['solar-power', 'backup-power', 'energy-savings']
     },
     {
         id: 'smart-bulb-pack',
@@ -215,9 +204,7 @@ export const products: Product[] = [
         },
         relatedProducts: ['smart-strip', 'motion-sensor'],
         stock: 50,
-        relatedCategories: ['smart-home', 'energy-savings', 'lighting'],
-        tags: ['smart-devices', 'lighting', 'energy-savings'],
-        slug: 'smart-led-bulb-4-pack'
+        relatedCategories: ['smart-home', 'energy-savings', 'lighting']
     },
     {
         id: "portable-ac",
@@ -245,9 +232,7 @@ export const products: Product[] = [
             "24-Hour Timer",
             "Self-Evaporative System"
         ],
-        relatedCategories: ["temperature", "energy-savings"],
-        tags: ['cooling', 'energy-savings'],
-        slug: '1hp-portable-ac'
+        relatedCategories: ["temperature", "energy-savings"]
     },
     {
         id: "battery-200ah",
@@ -269,78 +254,7 @@ export const products: Product[] = [
             "Temperature Protection",
             "Low Self-Discharge"
         ],
-        relatedCategories: ["backup-power", "solar-power"],
-        tags: ['power', 'energy-savings'],
-        slug: '200ah-deep-cycle-battery'
-    },
-    {
-        id: "smart-lock-1",
-        name: "Smart Door Lock",
-        price: 85000,
-        description: "Biometric and smartphone-controlled door lock with remote access",
-        category: "smart-devices",
-        subCategory: "security",
-        image: "/products/smart-lock.jpg",
-        specs: {
-            type: "Biometric",
-            battery: "1 Year",
-            connectivity: "WiFi"
-        },
-        features: [
-            "Fingerprint Access",
-            "Mobile App Control",
-            "Guest Access",
-            "Activity Log"
-        ],
-        tags: ["access-control", "security", "smart-home"],
-        slug: "smart-door-lock",
-        relatedCategories: ["security", "smart-home"]
-    },
-    {
-        id: "camera-system-1",
-        name: "Smart Security Camera",
-        price: 45000,
-        description: "HD security camera with night vision and motion detection",
-        category: "smart-devices",
-        subCategory: "security",
-        image: "/products/security-camera.jpg",
-        specs: {
-            resolution: "1080p",
-            nightVision: "Yes",
-            storage: "Cloud + SD"
-        },
-        features: [
-            "Motion Detection",
-            "Night Vision",
-            "Two-way Audio",
-            "Cloud Storage"
-        ],
-        tags: ["surveillance", "camera", "security"],
-        slug: "smart-security-camera",
-        relatedCategories: ["security", "smart-home"]
-    },
-    {
-        id: "surge-protector-1",
-        name: "Smart Surge Protector",
-        price: 35000,
-        description: "Intelligent surge protection with device monitoring",
-        category: "power",
-        subCategory: "protection",
-        image: "/products/surge-protector.jpg",
-        specs: {
-            outlets: "6",
-            protection: "4000 Joules",
-            monitoring: "Yes"
-        },
-        features: [
-            "Device Protection",
-            "Power Monitoring",
-            "Surge Protection",
-            "Mobile Alerts"
-        ],
-        tags: ["surge-protection", "protection", "power"],
-        slug: "smart-surge-protector",
-        relatedCategories: ["security", "power"]
+        relatedCategories: ["backup-power", "solar-power"]
     },
     // Add more products...
 ]

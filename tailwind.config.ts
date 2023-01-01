@@ -13,6 +13,7 @@ const config: Config = {
   			sans: ['var(--font-raleway)', 'system-ui', 'sans-serif'],
   			outfit: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
   			raleway: ['var(--font-raleway)', 'system-ui', 'sans-serif'],
+  			ojuju: ['Ojuju', 'system-ui', 'sans-serif'],
   		},
   		colors: {
   			background: 'hsl(var(--background))',

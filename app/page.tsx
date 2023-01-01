@@ -1,1177 +1,982 @@
 'use client'
 
-import { PageHeader } from '@/components/ui/page-header'
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import {
-  Zap, Sun, Battery, Thermometer,
-  ArrowRight, Calculator, LineChart,
-  Lightbulb, Coins, Shield, Info, Home, Radio, Gift, Mail, Check, Lock, Phone, Clock, CreditCard,
-  HeadphonesIcon
-} from 'lucide-react'
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import { Input } from '@/components/ui/input'
-import Image from 'next/image'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { ConsumptionCalculator } from './learn/components/consumption-calculator'
-import { getProductsByCategory, type Product } from '@/data/products'
-import { ProductSuggestion } from '@/components/products/product-suggestion'
-import { motion } from "framer-motion"
-import { ProductShowcase } from "@/components/home/product-showcase"
-import { BlogSection } from "@/components/blog-section"
-import { spacing } from '@/lib/constants'
+import { useState } from 'react'
+import { HeroSection } from "./components/home/hero/hero-section"
+import { DynamicCategories } from "./components/home/dynamic-categories/dynamic-categories"
+import { FeaturedProducts } from "./components/home/featured-products/featured-products"
+import { ServicesSection } from "./components/home/services/services"
+import { EnergyBillsSection } from "./components/home/energy-bills/energy-bills-section"
+import { SecuritySection } from "./components/home/security/security-section"
+import { HomeImprovementSection } from "./components/home/home-improvement/home-improvement-section"
+import { BlogSection } from "./components/blog/blog-section"
+import { NewsletterSection } from "./components/home/newsletter/newsletter-section"
+import { type Product } from '@/types/product'
+import { products as baseProducts } from '@/data/products'
+import { ProductShowcase } from './components/home/product-showcase/product-showcase'
+import { ArrowRight, Clock, TrendingUp, Star, Sparkles, Shield, Zap, Home, Sun } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 
-// Enhanced Calculator with validation and animations
-const EnergyCalculator = ({ onCalculate }: { onCalculate: (results: any) => void }) => {
-  const [monthlyBill, setMonthlyBill] = useState<string>('')
-  const [generatorHours, setGeneratorHours] = useState<string>('')
-  const [fuelCost, setFuelCost] = useState<string>('')
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [isCalculating, setIsCalculating] = useState(false)
-  const [savings, setSavings] = useState({ current: 0, potential: 0, monthly: 0 })
-
-  const validateInputs = () => {
-    const newErrors: Record<string, string> = {}
-
-    const billAmount = parseFloat(monthlyBill)
-    const hours = parseFloat(generatorHours)
-    const fuel = parseFloat(fuelCost)
-
-    if (billAmount && billAmount > 1000000) {
-      newErrors.monthlyBill = 'Amount seems too high'
-    }
-    if (hours && hours > 24) {
-      newErrors.generatorHours = 'Cannot exceed 24 hours'
-    }
-    if (fuel && fuel > 2000) {
-      newErrors.fuelCost = 'Amount seems too high'
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const handleInputBlur = () => {
-    if (monthlyBill && generatorHours && fuelCost) {
-      calculateSavings()
-    }
-  }
-
-  const calculateSavings = () => {
-    if (!validateInputs()) {
-      setSavings({ current: 0, potential: 0, monthly: 0 })
-      return
-    }
-
-    setIsCalculating(true)
-    const bill = parseFloat(monthlyBill) || 0
-    const hours = parseFloat(generatorHours) || 0
-    const fuel = parseFloat(fuelCost) || 0
-
-    setTimeout(() => {
-      const annualElectricCost = bill * 12
-      const annualFuelCost = hours * 30 * 12 * (fuel / 8)
-      const totalCurrent = annualElectricCost + annualFuelCost
-      const potentialSavings = totalCurrent * 0.4
-
-      setSavings({
-        current: totalCurrent,
-        potential: potentialSavings,
-        monthly: potentialSavings / 12
-      })
-      setIsCalculating(false)
-
-      onCalculate({
-        monthlyCost: bill + (hours * 30 * (fuel / 8)),
-        potentialSavings: potentialSavings / 12
-      })
-    }, 1000)
-  }
-
-  return (
-    <Card className="p-6 shadow-lg">
-      <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-        Energy Savings Calculator
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Info className="h-4 w-4 text-gray-400" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="max-w-xs">
-                Calculate potential savings based on your current energy costs.
-                We estimate a 40% reduction through our optimization recommendations.
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </h3>
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            Monthly Electricity Bill (₦)
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="h-4 w-4 text-gray-400" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Enter your average monthly NEPA/PHCN bill</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </label>
-          <div className="relative">
-            <Input
-              type="text"
-              value={monthlyBill}
-              onChange={(e) => {
-                const value = e.target.value.replace(/[^0-9]/g, '')
-                setMonthlyBill(value)
-                setErrors({ ...errors, monthlyBill: '' })
-              }}
-              onBlur={handleInputBlur}
-              placeholder="e.g. 25000"
-              className={`pr-10 focus:ring-2 ${errors.monthlyBill
-                ? 'focus:ring-red-500 border-red-300'
-                : 'focus:ring-green-500'
-                }`}
-            />
-            {monthlyBill && (
-              <button
-                onClick={() => setMonthlyBill('')}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                ×
-              </button>
-            )}
-          </div>
-          {errors.monthlyBill && (
-            <p className="text-red-500 text-xs mt-1">{errors.monthlyBill}</p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            Daily Generator Hours
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="h-4 w-4 text-gray-400" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Average hours your generator runs per day</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </label>
-          <div className="relative">
-            <Input
-              type="text"
-              value={generatorHours}
-              onChange={(e) => {
-                const value = e.target.value.replace(/[^0-9]/g, '')
-                setGeneratorHours(value)
-                setErrors({ ...errors, generatorHours: '' })
-              }}
-              onBlur={handleInputBlur}
-              placeholder="e.g. 8"
-              className={`pr-10 focus:ring-2 ${errors.generatorHours
-                ? 'focus:ring-red-500 border-red-300'
-                : 'focus:ring-green-500'
-                }`}
-            />
-            {generatorHours && (
-              <button
-                onClick={() => setGeneratorHours('')}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                ×
-              </button>
-            )}
-          </div>
-          {errors.generatorHours && (
-            <p className="text-red-500 text-xs mt-1">{errors.generatorHours}</p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            Fuel Cost per Liter (₦)
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="h-4 w-4 text-gray-400" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Current price of fuel/diesel per liter</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </label>
-          <div className="relative">
-            <Input
-              type="text"
-              value={fuelCost}
-              onChange={(e) => {
-                const value = e.target.value.replace(/[^0-9]/g, '')
-                setFuelCost(value)
-                setErrors({ ...errors, fuelCost: '' })
-              }}
-              onBlur={handleInputBlur}
-              placeholder="e.g. 700"
-              className={`pr-10 focus:ring-2 ${errors.fuelCost
-                ? 'focus:ring-red-500 border-red-300'
-                : 'focus:ring-green-500'
-                }`}
-            />
-            {fuelCost && (
-              <button
-                onClick={() => setFuelCost('')}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                ×
-              </button>
-            )}
-          </div>
-          {errors.fuelCost && (
-            <p className="text-red-500 text-xs mt-1">{errors.fuelCost}</p>
-          )}
-        </div>
-      </div>
-      <div className="bg-gradient-to-r from-[#003366]/10 to-[#003366]/5 p-6 rounded-lg">
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className={`text-center p-4 bg-white rounded-lg shadow-sm transform transition-all duration-500 ${isCalculating ? 'scale-95 opacity-50' : 'scale-100 opacity-100'
-            }`}>
-            <p className="text-sm text-gray-600 mb-2">Current Annual Cost</p>
-            <p className={`text-3xl font-bold text-[#003366] transition-all duration-500 ${isCalculating ? 'opacity-50' : 'opacity-100'
-              }`}>
-              ₦{savings?.current.toLocaleString() ?? '0'}
-            </p>
-          </div>
-          <div className={`text-center p-4 bg-white rounded-lg shadow-sm transform transition-all duration-500 ${isCalculating ? 'scale-95 opacity-50' : 'scale-100 opacity-100'
-            }`}>
-            <p className="text-sm text-gray-600 mb-2">Annual Savings</p>
-            <p className={`text-3xl font-bold text-green-600 transition-all duration-500 ${isCalculating ? 'opacity-50' : 'opacity-100'
-              }`}>
-              ₦{savings?.potential.toLocaleString() ?? '0'}
-            </p>
-          </div>
-          <div className={`text-center p-4 bg-white rounded-lg shadow-sm transform transition-all duration-500 ${isCalculating ? 'scale-95 opacity-50' : 'scale-100 opacity-100'
-            }`}>
-            <p className="text-sm text-gray-600 mb-2">Monthly Savings</p>
-            <p className={`text-3xl font-bold text-green-600 transition-all duration-500 ${isCalculating ? 'opacity-50' : 'opacity-100'
-              }`}>
-              ₦{savings?.monthly.toLocaleString() ?? '0'}
-            </p>
-          </div>
-        </div>
-      </div>
-    </Card>
-  )
-}
-
-// Update the customer benefits with more Nigerian context and interactivity
-const customerBenefits = [
-  {
-    icon: Zap,
-    title: "Lower Energy Bills",
-    description: "Reduce your electricity costs with smart consumption strategies",
-    details: [
-      "Monitor real-time electricity usage",
-      "Optimize peak vs off-peak consumption",
-      "Identify energy-hungry appliances",
-      "Track monthly spending patterns"
-    ],
-    href: "/learn/reduce-energy-bills"
-  },
-  {
-    icon: Shield,
-    title: "Protect Your Appliances",
-    description: "Extend the lifespan of your valuable home equipment",
-    details: [
-      "Prevent voltage fluctuation damage",
-      "Optimize appliance usage cycles",
-      "Implement surge protection",
-      "Schedule maintenance alerts"
-    ],
-    href: "/learn/appliance-protection"
-  },
-  {
-    icon: Home,
-    title: "Home Comfort",
-    description: "Maintain comfort while maximizing energy efficiency",
-    details: [
-      "Smart temperature management",
-      "Efficient lighting solutions",
-      "Backup power optimization",
-      "Automated energy control"
-    ],
-    href: "/learn/home-comfort"
-  }
-]
-
-const calculatorTypes = [
-  {
-    id: 'consumption',
-    icon: Calculator,
-    title: "Daily Usage Calculator",
-    description: "Find out how much power your home actually needs",
-    benefits: [
-      "Understand your daily power consumption",
-      "Size your inverter or solar system correctly",
-      "Identify energy-hungry appliances",
-      "Plan backup power duration"
-    ],
-    explanation: "This calculator helps you list all your appliances and their usage hours. It then calculates your total daily power needs in kilowatt-hours (kWh). This is essential for choosing the right backup power solution."
-  },
-  {
-    id: 'savings',
-    icon: LineChart,
-    title: "Savings Calculator",
-    description: "See how much you could save on power costs",
-    benefits: [
-      "Calculate current power expenses",
-      "See potential monthly savings",
-      "Compare different energy solutions",
-      "Estimate ROI on upgrades"
-    ],
-    explanation: "Enter your current electricity bill and generator usage to see how much you're spending. The calculator shows potential savings from energy-efficient solutions and better power management."
-  }
-]
-
-const featuredProducts = [
-  {
-    id: 'hybrid-inverter-5kva',
-    name: '5KVA Hybrid Inverter System',
-    image: '/products/hybrid-inverter.jpg',
-    price: 850000,
-    monthlyBill: '₦45,000 - ₦65,000',
-    description: 'Complete solar hybrid inverter system with lithium batteries',
-    benefits: [
-      'Reduces generator usage by 70%',
-      'Handles voltage fluctuations (140V-260V)',
-      'Smart load management',
-      'Mobile app monitoring'
-    ],
-    whyItWorks: 'Automatically switches between solar, grid, and battery power to minimize generator usage and maximize savings.',
-    savings: 'Average ₦35,000 monthly on fuel costs',
-    idealFor: 'Homes with 3-4 bedrooms running essential appliances',
-    features: [
-      {
-        title: 'Smart Load Management',
-        description: 'Prioritizes critical appliances during power outages'
-      },
-      {
-        title: 'Pure Sine Wave Output',
-        description: 'Safe for sensitive electronics and appliances'
-      },
-      {
-        title: 'Fast Charging',
-        description: '4-6 hours full charge from grid or generator'
-      }
-    ]
-  },
-  {
-    id: 'voltage-stabilizer-tns',
-    name: 'Servo Voltage Stabilizer',
-    image: '/products/stabilizer.jpg',
-    price: 145000,
-    monthlyBill: '₦15,000 - ₦25,000',
-    description: 'Industrial-grade voltage stabilizer with surge protection',
-    benefits: [
-      'Protects expensive appliances',
-      'Handles extreme voltage swings',
-      'Extends equipment lifespan',
-      'Zero maintenance required'
-    ],
-    whyItWorks: 'Maintains stable 220V output even when grid voltage drops to 140V or spikes to 290V, preventing damage to appliances.',
-    savings: 'Prevents ₦200,000+ in annual appliance repairs',
-    idealFor: 'Areas with frequent voltage fluctuations',
-    features: [
-      {
-        title: 'Wide Input Range',
-        description: '140V-290V input voltage range'
-      },
-      {
-        title: 'Digital Display',
-        description: 'Real-time voltage monitoring'
-      },
-      {
-        title: 'Surge Protection',
-        description: 'Built-in surge and lightning protection'
-      }
-    ]
-  },
-  {
-    id: 'smart-energy-monitor',
-    name: 'WiFi Energy Monitor',
-    image: '/products/energy-monitor.jpg',
-    price: 45000,
-    monthlyBill: '₦5,000 - ₦15,000',
-    description: 'Real-time power consumption monitoring system',
-    benefits: [
-      'Track energy usage in real-time',
-      'Identify power-hungry appliances',
-      'Set consumption alerts',
-      'Generate savings reports'
-    ],
-    whyItWorks: 'Provides detailed insights into power consumption patterns, helping identify wastage and optimize usage times.',
-    savings: 'Up to 30% reduction in monthly bills',
-    idealFor: 'Cost-conscious homes wanting to optimize consumption',
-    features: [
-      {
-        title: 'Mobile App',
-        description: 'Real-time monitoring and alerts'
-      },
-      {
-        title: 'Usage Analytics',
-        description: 'Detailed consumption patterns and trends'
-      },
-      {
-        title: 'Multi-Circuit Monitoring',
-        description: 'Track different areas separately'
-      }
-    ]
-  }
-]
+const products: Product[] = baseProducts.map(product => ({
+  ...product,
+  createdAt: new Date().toISOString()
+}))
 
 export default function HomePage() {
-  const [selectedCalculator, setSelectedCalculator] = useState<string>('consumption')
-  const [calculationResults, setCalculationResults] = useState<{
-    dailyUsage?: number;
-    monthlyCost?: number;
-    potentialSavings?: number;
-  } | null>(null)
-  const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([])
-  const [showCalculator, setShowCalculator] = useState(false)
-  const [calculatorState, setCalculatorState] = useState<'idle' | 'calculating' | 'complete'>('idle')
-  const [transitionDirection, setTransitionDirection] = useState<'in' | 'out'>('in')
-
-  const handleCalculationResults = (results: any) => {
-    setCalculatorState('calculating')
-    setCalculationResults(results)
-
-    setTimeout(() => {
-      let relevantProducts: Product[] = []
-
-      if (results.dailyUsage) {
-        // For high consumption users (>15 kWh/day)
-        if (results.dailyUsage > 15) {
-          relevantProducts = [
-            ...getProductsByCategory('solar').filter(p =>
-              p.specifications?.capacity && Number(p.specifications.capacity) >= results.dailyUsage
-            ),
-            ...getProductsByCategory('inverters').filter(p =>
-              p.specifications?.capacity && Number(p.specifications.capacity) >= results.dailyUsage * 1.3
-            ),
-            ...getProductsByCategory('smart-devices').filter(p =>
-              p.category === 'energy-management'
-            )
-          ]
-        }
-        // For medium consumption users (5-15 kWh/day)
-        else if (results.dailyUsage > 5) {
-          relevantProducts = [
-            ...getProductsByCategory('inverters').filter(p =>
-              p.specifications?.capacity && Number(p.specifications.capacity) >= results.dailyUsage * 1.2
-            ),
-            ...getProductsByCategory('smart-devices').filter(p =>
-              p.category === 'energy-management'
-            ),
-            ...getProductsByCategory('accessories').filter(p =>
-              p.category === 'energy-saving'
-            )
-          ]
-        }
-        // For low consumption users (<5 kWh/day)
-        else {
-          relevantProducts = [
-            ...getProductsByCategory('smart-devices'),
-            ...getProductsByCategory('accessories').filter(p =>
-              p.category === 'energy-saving'
-            )
-          ]
-        }
-
-        // Add recommendations based on highest consuming appliance
-        if (results.highestConsumer) {
-          const applianceType = results.highestConsumer.name.toLowerCase()
-          if (applianceType.includes('ac')) {
-            relevantProducts.push(...getProductsByCategory('smart-devices').filter(p =>
-              p.category === 'ac-control'
-            ))
-          }
-        }
-      }
-
-      // Ensure we have unique products
-      const uniqueProducts = Array.from(new Set(relevantProducts.map(p => p.id)))
-        .map(id => relevantProducts.find(p => p.id === id)!)
-        .slice(0, 3) as Product[]
-
-      setRecommendedProducts(uniqueProducts)
-      setCalculatorState('complete')
-    }, 1500)
-  }
-
-  const handleCalculatorToggle = () => {
-    setShowCalculator(prev => !prev)
-    if (!showCalculator) {
-      setCalculatorState('idle')
-      setRecommendedProducts([])
-      setCalculationResults(null)
-    }
-  }
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null)
 
   return (
     <main className="flex-1">
-      {/* Hero Section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="relative min-h-[100vh]"
-      >
-        {/* Background with Parallax */}
-        <motion.div
-          initial={{ scale: 1.2 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute inset-0 z-0"
-        >
-          <div className="relative w-full h-full">
-            <Image
-              src="/betadomot1.jpeg"
-              alt="Betadomot Home"
-              fill
-              className="object-cover object-center brightness-90"
-              priority
-              sizes="100vw"
-              quality={100}
+      <HeroSection />
+
+      {/* Mother's Day Gifts */}
+      <section className="py-16 bg-white">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">mother's day gifts she'll love</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">shop the collection</a>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <ProductCard
+              title="spa gift set"
+              price="35,000"
+              image="/spa-1.jpg"
+              badge={{ text: "Gift Idea", variant: "secondary" }}
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/0 to-black/40" />
+            <ProductCard
+              title="jewelry box"
+              price="28,000"
+              image="/jewelry-1.jpg"
+              badge={{ text: "Best Seller", variant: "default" }}
+            />
+            <ProductCard
+              title="tea set"
+              price="45,000"
+              image="/tea-1.jpg"
+              badge={{ text: "New", variant: "secondary" }}
+            />
+            <ProductCard
+              title="photo frame set"
+              price="22,000"
+              image="/frames-1.jpg"
+              badge={{ text: "Gift Idea", variant: "secondary" }}
+            />
           </div>
-        </motion.div>
+        </div>
+      </section>
 
-        {/* Hero Content with Stagger Animation */}
-        <div className="relative z-10 h-full">
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-48 lg:pt-52">
-            <motion.div
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="max-w-2xl md:mt-6"
-            >
-              <motion.h1
-                className="text-5xl sm:text-6xl lg:text-8xl font-bold text-white mb-4 leading-none"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.8 }}
-              >
-                Elevate your
-                <br />
-                lifestyle.
-              </motion.h1>
-
-              <motion.span
-                className="text-5xl sm:text-6xl lg:text-8xl font-bold text-[#E4A853]"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1.1 }}
-              >
-                Live brilliantly.
-              </motion.span>
-            </motion.div>
-            <div className="text-white/70 text-2xl text-left mt-12 mb-4 order-3 md:hidden">
-              Modern living redefined.
-              <br className="block" />
-              Smart homes crafted for the Nigerian elite.
-            </div>
+      {/* Easter Collection */}
+      <section className="py-16 bg-gray-50">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">easter entertaining essentials</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">shop all easter</a>
           </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <ProductCard
+              title="dining set"
+              price="150,000"
+              image="/easter-dining-1.jpg"
+              badge={{ text: "Featured", variant: "secondary" }}
+            />
+            <ProductCard
+              title="table runner"
+              price="15,000"
+              image="/runner-1.jpg"
+              badge={{ text: "New", variant: "default" }}
+            />
+            <ProductCard
+              title="serving set"
+              price="45,000"
+              image="/serving-1.jpg"
+              badge={{ text: "Must Have", variant: "secondary" }}
+            />
+            <ProductCard
+              title="centerpiece"
+              price="25,000"
+              image="/centerpiece-1.jpg"
+              badge={{ text: "Featured", variant: "secondary" }}
+            />
+          </div>
+        </div>
+      </section>
 
-          {/* Bottom Line with Slide Up */}
-          <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.4 }}
-            className="absolute bottom-[-250px] left-0 right-0"
-          >
-            <div className="border-t border-white/20">
-              <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-                <div className="flex flex-col md:flex-row md:items-center justify-between py-4 md:h-14 gap-4 md:gap-0">
-                  <div className="text-white/80 text-sm order-1 md:order-none hidden md:block">
-                    Betadomot
-                  </div>
-                  <div className="text-white/70 text-sm text-center order-3 md:order-none hidden md:block">
-                    Modern living redefined.
-                    <br className="hidden md:block" />
-                    Smart homes crafted for the Nigerian elite.
-                  </div>
-                  <div className="text-white/80 text-lg order-2 md:order-none">
-                    Explore Products
-                  </div>
+      {/* New Arrivals */}
+      <section className="py-16 bg-white">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">just landed: new arrivals</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">view all new arrivals</a>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <ProductCard
+              title="modern pendant light"
+              price="85,000"
+              image="/pendant-1.jpg"
+              badge={{ text: "New", variant: "default" }}
+            />
+            <ProductCard
+              title="accent table"
+              price="65,000"
+              image="/accent-table-1.jpg"
+              badge={{ text: "New", variant: "default" }}
+            />
+            <ProductCard
+              title="wall shelf set"
+              price="45,000"
+              image="/shelf-1.jpg"
+              badge={{ text: "New", variant: "default" }}
+            />
+            <ProductCard
+              title="area rug"
+              price="120,000"
+              image="/rug-1.jpg"
+              badge={{ text: "New", variant: "default" }}
+            />
+            <ProductCard
+              title="desk lamp"
+              price="35,000"
+              image="/desk-lamp-1.jpg"
+              badge={{ text: "New", variant: "default" }}
+            />
+            <ProductCard
+              title="storage basket"
+              price="18,000"
+              image="/basket-1.jpg"
+              badge={{ text: "New", variant: "default" }}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Cool Finds */}
+      <section className="py-16 bg-gray-50">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">cool finds under ₦50,000</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">view all finds</a>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <ProductCard
+              title="decorative cushion"
+              price="12,000"
+              image="/cushion-1.jpg"
+              badge={{ text: "Best Value", variant: "secondary" }}
+            />
+            <ProductCard
+              title="wall clock"
+              price="25,000"
+              image="/clock-1.jpg"
+              badge={{ text: "Trending", variant: "default" }}
+            />
+            <ProductCard
+              title="plant stand"
+              price="18,000"
+              image="/plant-stand-1.jpg"
+              badge={{ text: "Popular", variant: "secondary" }}
+            />
+            <ProductCard
+              title="table lamp"
+              price="35,000"
+              image="/lamp-2.jpg"
+              badge={{ text: "Best Seller", variant: "default" }}
+            />
+            <ProductCard
+              title="storage basket set"
+              price="22,000"
+              image="/basket-2.jpg"
+              badge={{ text: "New", variant: "secondary" }}
+            />
+            <ProductCard
+              title="photo frames"
+              price="15,000"
+              image="/frames-2.jpg"
+              badge={{ text: "Hot Pick", variant: "default" }}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Trending Now */}
+      <section className="py-16 bg-white">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">what's trending now</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">view all trending</a>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <ProductCard
+              title="Modern Floor Lamp"
+              price="45,000"
+              image="/lamp-1.jpg"
+              badge={{ text: "Trending", variant: "default" }}
+            />
+            <ProductCard
+              title="Velvet Accent Chair"
+              price="120,000"
+              image="/chair-1.jpg"
+              badge={{ text: "Best Seller", variant: "secondary" }}
+            />
+            <ProductCard
+              title="Ceramic Vase Set"
+              price="25,000"
+              image="/vase-1.jpg"
+              badge={{ text: "New", variant: "default" }}
+            />
+            <ProductCard
+              title="Wall Art Collection"
+              price="35,000"
+              image="/art-1.jpg"
+              badge={{ text: "Trending", variant: "default" }}
+            />
+            <ProductCard
+              title="Throw Pillows Set"
+              price="18,000"
+              image="/pillows-1.jpg"
+              badge={{ text: "Hot Pick", variant: "secondary" }}
+            />
+            <ProductCard
+              title="Table Decor Set"
+              price="28,000"
+              image="/decor-1.jpg"
+              badge={{ text: "New", variant: "default" }}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Daily Deals */}
+      <section className="py-16 bg-gray-50">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">24-hours only: deals of the day</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">see all deals</a>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <ProductCard
+              title="Luxury Sofa"
+              price="450,000"
+              originalPrice="600,000"
+              image="/sofa-deal-1.jpg"
+              badge={{ text: "25% Off", variant: "destructive" }}
+            />
+            <ProductCard
+              title="Coffee Table"
+              price="75,000"
+              originalPrice="150,000"
+              image="/table-deal-1.jpg"
+              badge={{ text: "50% Off", variant: "destructive" }}
+            />
+            <ProductCard
+              title="Floor Lamp"
+              price="35,000"
+              originalPrice="50,000"
+              image="/lamp-deal-1.jpg"
+              badge={{ text: "30% Off", variant: "destructive" }}
+            />
+            <ProductCard
+              title="Dining Set"
+              price="280,000"
+              originalPrice="400,000"
+              image="/dining-deal-1.jpg"
+              badge={{ text: "30% Off", variant: "destructive" }}
+            />
+            <ProductCard
+              title="Bedside Table"
+              price="45,000"
+              originalPrice="60,000"
+              image="/bedside-deal-1.jpg"
+              badge={{ text: "25% Off", variant: "destructive" }}
+            />
+            <ProductCard
+              title="Wall Mirror"
+              price="40,000"
+              originalPrice="80,000"
+              image="/mirror-deal-1.jpg"
+              badge={{ text: "50% Off", variant: "destructive" }}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Style Inspiration: Modern Living */}
+      <section className="py-16 bg-white">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">style inspiration: modern living</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">shop the look</a>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                  <img src="/modern-sofa-1.jpg" alt="Contemporary Sofa 1" className="w-full h-full object-cover" />
+                </div>
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                  <img src="/modern-sofa-2.jpg" alt="Contemporary Sofa 2" className="w-full h-full object-cover" />
                 </div>
               </div>
+              <h3 className="text-lg font-medium group cursor-pointer">
+                <span className="flex items-center gap-2">
+                  contemporary sofas from ₦650,000
+                  <ArrowRight className="h-5 w-5 text-[#E4A853] transition-transform group-hover:translate-x-1" />
+                </span>
+              </h3>
             </div>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* Energy Bills Section with Scroll Animation */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        className="relative py-32 lg:py-40 overflow-hidden"
-      >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-            {/* Left Content with Stagger */}
-            <motion.div
-              initial={{ x: -100, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="flex-1 max-w-2xl"
-            >
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-6 leading-none">
-                Betadomot
-                <br />
-                <span className="text-[#E4A853]">pay less energy bills.</span>
-              </h2>
-              <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-lg leading-relaxed">
-                Tired of outrageous energy bills? Our solutions help Nigerian homes save
-                <span className="text-[#E4A853] font-semibold"> millions yearly</span> while enjoying
-                <span className="text-black font-semibold"> constant power supply</span>.
-              </p>
-              <Link href="/learn">
-                <Button
-                  className="group bg-black hover:bg-black/90 text-white px-8 h-14 
-                    text-base transition-all duration-300 rounded-full"
-                >
-                  Learn how
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </motion.div>
-
-            {/* Right Image with Float Animation */}
-            <motion.div
-              initial={{ x: 100, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="flex-1 relative w-full aspect-square lg:aspect-auto lg:h-[600px]"
-            >
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -right-4 -bottom-4 w-full h-full border border-[#E4A853]/20 rounded-2xl"
-              />
-              <div className="relative w-full h-full rounded-2xl overflow-hidden">
-                <Image
-                  src="/powersaving2.jpeg"
-                  alt="Energy Savings Visualization"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Security Section - Image on Left */}
-      <motion.div className="relative py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
-            {/* Left Image with Float Animation */}
-            <motion.div
-              initial={{ x: -100, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="flex-1 relative w-full aspect-square lg:aspect-auto lg:h-[600px]"
-            >
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -left-4 -bottom-4 w-full h-full border border-[#E4A853]/20 rounded-2xl"
-              />
-              <div className="relative w-full h-full rounded-2xl overflow-hidden">
-                <Image
-                  src="/secure-home.jpg"
-                  alt="Home Security System"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </motion.div>
-
-            {/* Content */}
-            <motion.div
-              initial={{ x: 100, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="flex-1 max-w-2xl"
-            >
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-6 leading-none">
-                Betadomot
-                <br />
-                <span className="text-[#E4A853]">secures your home.</span>
-              </h2>
-              <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-lg leading-relaxed">
-                Protect your valuable investments with our
-                <span className="text-[#E4A853] font-semibold"> smart security </span>
-                solutions while enjoying
-                <span className="text-black font-semibold"> peace of mind</span>.
-              </p>
-              <Link href="/security">
-                <Button
-                  className="group bg-black hover:bg-black/90 text-white px-8 h-14 
-                    text-base transition-all duration-300 rounded-full"
-                >
-                  Learn more
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Home Improvement Section */}
-      <motion.div className="relative py-32 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
-            {/* Content */}
-            <motion.div
-              initial={{ x: -100, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="flex-1 max-w-2xl"
-            >
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-6 leading-none">
-                Betadomot
-                <br />
-                <span className="text-[#E4A853]">improves your home.</span>
-              </h2>
-              <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-lg leading-relaxed">
-                Transform your living space with our
-                <span className="text-[#E4A853] font-semibold"> smart upgrades </span>
-                and experience
-                <span className="text-black font-semibold"> modern comfort</span>.
-              </p>
-              <Link href="/home-improvement">
-                <Button
-                  className="group bg-black hover:bg-black/90 text-white px-8 h-14 
-                    text-base transition-all duration-300 rounded-full"
-                >
-                  Discover more
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </motion.div>
-
-            {/* Right Image with Float Animation */}
-            <motion.div
-              initial={{ x: 100, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="flex-1 relative w-full aspect-square lg:aspect-auto lg:h-[600px]"
-            >
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -right-4 -bottom-4 w-full h-full border border-[#E4A853]/20 rounded-2xl"
-              />
-              <div className="relative w-full h-full rounded-2xl overflow-hidden">
-                <Image
-                  src="/improvement.jpeg"
-                  alt="Modern Home Improvements"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Vision Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="py-32 bg-white"
-      >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center"
-          >
-            <div className="relative aspect-square">
-              <div className="absolute inset-0 bg-[#1A1A1A] rounded-lg overflow-hidden">
-                <motion.div
-                  initial={{ scale: 1.2 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 1.5, ease: "easeOut" }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src="/our-vision.jpeg"
-                    alt="Modern Nigerian Home"
-                    fill
-                    className="object-cover opacity-80"
-                  />
-                </motion.div>
-              </div>
-              <div className="absolute -bottom-8 -right-8 w-48 h-48 bg-[#E4A853]/10 rounded-full blur-2xl" />
-            </div>
-
-            <div className="relative">
-              <motion.span
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-sm font-medium text-[#E4A853] mb-6 block"
-              >
-                Our Vision
-              </motion.span>
-
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="text-4xl sm:text-5xl font-bold text-[#1A1A1A] mb-8 leading-tight"
-              >
-                Your home tells
-                <span className="block">your story</span>
-              </motion.h2>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="text-gray-600 text-lg leading-relaxed"
-              >
-                Beyond four walls, your home is where life's stories begin. We're here to make those stories extraordinary.
-
-              </motion.p>
-            </div>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      <ProductShowcase />
-
-      {/* Blog Section */}
-      <BlogSection />
-
-      {/* CTA Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="relative py-32 bg-gradient-to-br from-[#003366] to-[#002244] overflow-hidden"
-      >
-        {/* Enhanced Background Effects - Removed grid pattern */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.2, 0.1, 0.2]
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-radial from-[#E4A853]/10 to-transparent"
-          />
-          <motion.div
-            animate={{
-              scale: [1.2, 1, 1.2],
-              opacity: [0.1, 0.2, 0.1]
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-radial from-[#003366]/10 to-transparent"
-          />
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="inline-block text-sm font-medium bg-gradient-to-r from-[#E4A853] to-[#FFD700] 
-                text-transparent bg-clip-text mb-6 tracking-wider uppercase">
-                Get Started Today
-              </span>
-
-              <h2 className="text-4xl sm:text-5xl font-bold text-white mb-8 leading-tight">
-                Ready to transform
-                <span className="block text-[#E4A853] mt-2">your living space?</span>
-              </h2>
-
-              <p className="text-gray-300 text-lg mb-10 leading-relaxed">
-                Book a consultation with our experts and discover how to make your home
-                smarter, more efficient, and truly exceptional.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/consultation">
-                  <Button className="h-14 px-8 bg-[#E4A853] hover:bg-[#FFD700] 
-                    text-black font-medium transition-all duration-300
-                    rounded-full flex items-center justify-center gap-2
-                    hover:gap-3 shadow-lg hover:shadow-xl 
-                    transform hover:-translate-y-0.5">
-                    Book a Free Consultation
-                    <ArrowRight className="h-5 w-5 transition-all duration-300" />
-                  </Button>
-                </Link>
-                <Link href="/portfolio">
-                  <Button variant="outline"
-                    className="h-14 px-8 border-white/20 text-[#E4A853] 
-                      hover:bg-white/10 backdrop-blur-sm
-                      rounded-full flex items-center justify-center gap-2
-                      hover:gap-3 transition-all duration-300">
-                    View Our Portfolio
-                    <ArrowRight className="h-5 w-5 transition-all duration-300" />
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-
-            {/* Features Grid */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="grid grid-cols-2 gap-6"
-            >
-              {[
-                {
-                  title: "Free Consultation",
-                  description: "Expert advice tailored to your needs",
-                  icon: Phone,
-                  delay: 0.2
-                },
-                {
-                  title: "Quick Installation",
-                  description: "Professional setup within days",
-                  icon: Clock,
-                  delay: 0.3
-                },
-                {
-                  title: "24/7 Support",
-                  description: "Round-the-clock assistance",
-                  icon: HeadphonesIcon,
-                  delay: 0.4
-                },
-                {
-                  title: "Flexible Payment",
-                  description: "Convenient payment options",
-                  icon: CreditCard,
-                  delay: 0.5
-                }
-              ].map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: feature.delay }}
-                  viewport={{ once: true }}
-                  className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 group
-                    border border-white/10 hover:border-[#E4A853]/30
-                    transition-all duration-300 hover:shadow-lg"
-                >
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#E4A853]/20 to-[#E4A853]/5 
-                    rounded-xl flex items-center justify-center mb-4 
-                    group-hover:from-[#E4A853]/30 group-hover:to-[#E4A853]/10 
-                    transition-all duration-300">
-                    <feature.icon className="h-6 w-6 text-[#E4A853]" />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2 text-white group-hover:text-[#E4A853]
-                    transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-400">
-                    {feature.description}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Newsletter Section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="relative py-32 bg-gradient-to-br from-[#003366] to-[#002244]"
-      >
-        {/* Enhanced Background Effects - Removed grid pattern */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.2, 0.1, 0.2]
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-radial from-[#E4A853]/10 to-transparent"
-          />
-          <motion.div
-            animate={{
-              scale: [1.2, 1, 1.2],
-              opacity: [0.1, 0.2, 0.1]
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-radial from-[#003366]/10 to-transparent"
-          />
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            className="max-w-2xl mx-auto text-center"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <span className="inline-block text-sm font-medium bg-gradient-to-r from-[#E4A853] to-[#FFD700] 
-                text-transparent bg-clip-text mb-4 tracking-wider uppercase">
-                Join Our Community
-              </span>
-              <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight">
-                Stay ahead with smart living
-                <span className="block text-[#E4A853] mt-2">updates & insights</span>
-              </h2>
-              <p className="text-lg text-gray-300 mb-10 leading-relaxed">
-                Get expert tips, exclusive offers, and the latest innovations in smart home technology
-                delivered straight to your inbox.
-              </p>
-            </motion.div>
-
-            <motion.form
-              onSubmit={(e) => e.preventDefault()}
-              className="relative flex flex-col sm:flex-row gap-4 max-w-xl mx-auto"
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              <div className="relative flex-1 group">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="h-14 bg-white/10 border-white/20 text-white placeholder:text-gray-400
-                    focus:bg-white/15 transition-all duration-300 pr-12 pl-5
-                    rounded-full backdrop-blur-sm
-                    group-hover:border-[#E4A853]/50 focus:border-[#E4A853]
-                    focus:ring focus:ring-[#E4A853]/20"
-                />
-                <Mail className="absolute right-5 top-1/2 transform -translate-y-1/2 h-5 w-5 
-                  text-gray-400 group-hover:text-[#E4A853] transition-colors duration-300" />
-              </div>
-              <Button
-                className="h-14 px-8 bg-[#E4A853] hover:bg-[#FFD700]
-                  text-black font-medium transition-all duration-300 
-                  shadow-lg hover:shadow-xl transform hover:-translate-y-0.5
-                  rounded-full flex items-center justify-center gap-2
-                  hover:gap-3"
-              >
-                Subscribe
-                <ArrowRight className="h-5 w-5 transition-all duration-300" />
-              </Button>
-            </motion.form>
-
-            <motion.p
-              className="text-sm text-gray-400 mt-6 flex items-center justify-center gap-2"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              <Lock className="h-4 w-4" />
-              By subscribing, you agree to our Privacy Policy and consent to receive updates.
-            </motion.p>
-          </motion.div>
-
-          {/* Features Grid */}
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20"
-            variants={{
-              hidden: { opacity: 0 },
-              show: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.1
-                }
-              }
-            }}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-          >
-            {[
-              { icon: Zap, text: "Exclusive Deals", delay: 0 },
-              { icon: Lightbulb, text: "Energy Tips", delay: 0.1 },
-              { icon: Home, text: "Home Guides", delay: 0.2 },
-              { icon: Gift, text: "Special Rewards", delay: 0.3 }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                variants={{
-                  hidden: { y: 20, opacity: 0 },
-                  show: { y: 0, opacity: 1 }
-                }}
-                whileHover={{ y: -5, scale: 1.02 }}
-                className="text-center group"
-              >
-                <div className="w-14 h-14 bg-gradient-to-br from-[#E4A853]/20 to-[#E4A853]/5 
-                  rounded-2xl flex items-center justify-center mx-auto mb-4 
-                  group-hover:from-[#E4A853]/30 group-hover:to-[#E4A853]/10 
-                  transition-all duration-300 backdrop-blur-sm"
-                >
-                  <item.icon className="h-7 w-7 text-[#E4A853]" />
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                  <img src="/modern-light-1.jpg" alt="Statement Lighting 1" className="w-full h-full object-cover" />
                 </div>
-                <p className="text-white font-medium text-lg">{item.text}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                  <img src="/modern-light-2.jpg" alt="Statement Lighting 2" className="w-full h-full object-cover" />
+                </div>
+              </div>
+              <h3 className="text-lg font-medium group cursor-pointer">
+                <span className="flex items-center gap-2">
+                  statement lighting from ₦120,000
+                  <ArrowRight className="h-5 w-5 text-[#E4A853] transition-transform group-hover:translate-x-1" />
+                </span>
+              </h3>
+            </div>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                  <img src="/modern-storage-1.jpg" alt="Minimalist Storage 1" className="w-full h-full object-cover" />
+                </div>
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                  <img src="/modern-storage-2.jpg" alt="Minimalist Storage 2" className="w-full h-full object-cover" />
+                </div>
+              </div>
+              <h3 className="text-lg font-medium group cursor-pointer">
+                <span className="flex items-center gap-2">
+                  minimalist storage from ₦250,000
+                  <ArrowRight className="h-5 w-5 text-[#E4A853] transition-transform group-hover:translate-x-1" />
+                </span>
+              </h3>
+            </div>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                  <img src="/modern-accent-1.jpg" alt="Accent Pieces 1" className="w-full h-full object-cover" />
+                </div>
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                  <img src="/modern-accent-2.jpg" alt="Accent Pieces 2" className="w-full h-full object-cover" />
+                </div>
+              </div>
+              <h3 className="text-lg font-medium group cursor-pointer">
+                <span className="flex items-center gap-2">
+                  accent pieces from ₦85,000
+                  <ArrowRight className="h-5 w-5 text-[#E4A853] transition-transform group-hover:translate-x-1" />
+                </span>
+              </h3>
+            </div>
+          </div>
         </div>
-      </motion.div>
+      </section>
+
+      {/* Energy Saving Appliances */}
+      <section className="py-16 bg-white">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">energy saving appliances</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">view all appliances</a>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <CategoryCard
+              title="Smart Refrigerators"
+              price="450,000"
+              images={['/fridge-1.jpg', '/fridge-2.jpg']}
+            />
+            <CategoryCard
+              title="Energy Efficient ACs"
+              price="350,000"
+              images={['/ac-1.jpg', '/ac-2.jpg']}
+            />
+            <CategoryCard
+              title="Smart Washing Machines"
+              price="280,000"
+              images={['/washer-1.jpg', '/washer-2.jpg']}
+            />
+            <CategoryCard
+              title="LED Lighting Solutions"
+              price="45,000"
+              images={['/led-1.jpg', '/led-2.jpg']}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Smart Home Essentials */}
+      <section className="py-16 bg-gray-50">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">smart home essentials</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">view all smart devices</a>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <ProductCard
+              title="Smart Security Camera"
+              price="85,000"
+              image="/camera-1.jpg"
+              badge={{ text: "Best Seller", variant: "default" }}
+            />
+            <ProductCard
+              title="Smart Doorbell"
+              price="65,000"
+              image="/doorbell-1.jpg"
+              badge={{ text: "New", variant: "secondary" }}
+            />
+            <ProductCard
+              title="Smart Light Bulbs Set"
+              price="45,000"
+              image="/bulbs-1.jpg"
+              badge={{ text: "Popular", variant: "default" }}
+            />
+            <ProductCard
+              title="Smart Thermostat"
+              price="120,000"
+              image="/thermostat-1.jpg"
+              badge={{ text: "Energy Saver", variant: "secondary" }}
+            />
+            <ProductCard
+              title="Smart Lock"
+              price="95,000"
+              image="/lock-1.jpg"
+              badge={{ text: "Top Rated", variant: "default" }}
+            />
+            <ProductCard
+              title="Smart Speaker"
+              price="75,000"
+              image="/speaker-1.jpg"
+              badge={{ text: "Must Have", variant: "secondary" }}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Home Office */}
+      <section className="py-16 bg-white">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">create your perfect home office</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">shop home office</a>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <CategoryCard
+              title="Ergonomic Chairs"
+              price="180,000"
+              images={['/office-chair-1.jpg', '/office-chair-2.jpg']}
+            />
+            <CategoryCard
+              title="Standing Desks"
+              price="250,000"
+              images={['/standing-desk-1.jpg', '/standing-desk-2.jpg']}
+            />
+            <CategoryCard
+              title="Storage Solutions"
+              price="120,000"
+              images={['/office-storage-1.jpg', '/office-storage-2.jpg']}
+            />
+            <CategoryCard
+              title="Desk Accessories"
+              price="45,000"
+              images={['/desk-acc-1.jpg', '/desk-acc-2.jpg']}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Outdoor Space */}
+      <section className="py-16 bg-white">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">transform your outdoor space</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">view outdoor collection</a>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <CategoryCard
+              title="Lounge Sets"
+              price="450,000"
+              images={['/outdoor-lounge-1.jpg', '/outdoor-lounge-2.jpg']}
+            />
+            <CategoryCard
+              title="Dining Sets"
+              price="350,000"
+              images={['/outdoor-dining-1.jpg', '/outdoor-dining-2.jpg']}
+            />
+            <CategoryCard
+              title="Garden Decor"
+              price="85,000"
+              images={['/garden-decor-1.jpg', '/garden-decor-2.jpg']}
+            />
+            <CategoryCard
+              title="Lighting"
+              price="65,000"
+              images={['/outdoor-light-1.jpg', '/outdoor-light-2.jpg']}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Kitchen & Dining */}
+      <section className="py-16 bg-white">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">kitchen & dining done right</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">view all kitchen</a>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Category Cards */}
+            <CategoryCard
+              title="Dining tables"
+              price="200,000"
+              images={['/dining-table-1.jpg', '/dining-table-2.jpg']}
+            />
+            <CategoryCard
+              title="Dining chairs"
+              price="50,000"
+              images={['/dining-chair-1.jpg', '/dining-chair-2.jpg']}
+            />
+            <CategoryCard
+              title="Bar stools"
+              price="50,000"
+              images={['/bar-stool-1.jpg', '/bar-stool-2.jpg']}
+            />
+            <CategoryCard
+              title="Sideboards"
+              price="100,000"
+              images={['/sideboard-1.jpg', '/sideboard-2.jpg']}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Outdoor Entertaining */}
+      <section className="py-16 bg-gray-50">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">best sellers: outdoor entertaining</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">see all</a>
+          </div>
+          <div className="overflow-hidden">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+              {/* Product Cards */}
+              {/* Add your outdoor entertaining products here */}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Room Collections */}
+      <section className="py-16 bg-white">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="space-y-16">
+            {/* Living Room */}
+            <div>
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-3xl font-bold text-gray-900">living room essentials</h2>
+                <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">view all living room</a>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <CategoryCard
+                  title="Sofas"
+                  price="500,000"
+                  images={['/sofa-1.jpg', '/sofa-2.jpg']}
+                />
+                <CategoryCard
+                  title="Coffee tables"
+                  price="150,000"
+                  images={['/coffee-table-1.jpg', '/coffee-table-2.jpg']}
+                />
+                <CategoryCard
+                  title="TV stands"
+                  price="200,000"
+                  images={['/tv-stand-1.jpg', '/tv-stand-2.jpg']}
+                />
+                <CategoryCard
+                  title="Accent chairs"
+                  price="150,000"
+                  images={['/accent-chair-1.jpg', '/accent-chair-2.jpg']}
+                />
+              </div>
+            </div>
+
+            {/* Bedroom */}
+            <div>
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-3xl font-bold text-gray-900">bedroom collections</h2>
+                <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">view all bedroom</a>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <CategoryCard
+                  title="Beds"
+                  price="400,000"
+                  images={['/bed-1.jpg', '/bed-2.jpg']}
+                />
+                <CategoryCard
+                  title="Mattresses"
+                  price="250,000"
+                  images={['/mattress-1.jpg', '/mattress-2.jpg']}
+                />
+                <CategoryCard
+                  title="Wardrobes"
+                  price="300,000"
+                  images={['/wardrobe-1.jpg', '/wardrobe-2.jpg']}
+                />
+                <CategoryCard
+                  title="Bedside tables"
+                  price="80,000"
+                  images={['/bedside-table-1.jpg', '/bedside-table-2.jpg']}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Smart Home Solutions */}
+      <section className="py-16 bg-gray-50">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">Smart Home Solutions</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">View all solutions</a>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Security */}
+            <div className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors">
+              <div className="flex items-center gap-3 mb-3">
+                <Shield className="h-5 w-5 text-[#E4A853]" />
+                <h3 className="text-lg font-medium text-gray-900">Secure Home</h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-4">Protect your home with smart security solutions, from cameras to smart locks.</p>
+              <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 text-sm font-medium flex items-center gap-2">
+                Explore security options
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+
+            {/* Energy */}
+            <div className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors">
+              <div className="flex items-center gap-3 mb-3">
+                <Zap className="h-5 w-5 text-[#E4A853]" />
+                <h3 className="text-lg font-medium text-gray-900">Energy Management</h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-4">Smart solutions to monitor and reduce your energy consumption.</p>
+              <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 text-sm font-medium flex items-center gap-2">
+                View energy solutions
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+
+            {/* Home Care */}
+            <div className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors">
+              <div className="flex items-center gap-3 mb-3">
+                <Home className="h-5 w-5 text-[#E4A853]" />
+                <h3 className="text-lg font-medium text-gray-900">Home Care</h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-4">Automated solutions for cleaning, maintenance, and home care.</p>
+              <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 text-sm font-medium flex items-center gap-2">
+                Discover home care
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Home Services */}
+      <section className="py-16 bg-white">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">Home Services</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">View all services</a>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {/* Installation */}
+            <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Installation</h3>
+              <p className="text-sm text-gray-600">Professional installation for all your furniture and appliances</p>
+            </div>
+
+            {/* Assembly */}
+            <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Assembly</h3>
+              <p className="text-sm text-gray-600">Expert assembly service for your new furniture</p>
+            </div>
+
+            {/* Maintenance */}
+            <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Maintenance</h3>
+              <p className="text-sm text-gray-600">Regular maintenance to keep your home in perfect condition</p>
+            </div>
+
+            {/* Design */}
+            <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Design</h3>
+              <p className="text-sm text-gray-600">Interior design consultation and space planning</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section (Moved from Hero) */}
+      <section className="py-16 bg-gray-50">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-[#E4A853] text-2xl font-bold mb-2">Premium Quality</div>
+              <div className="text-gray-600">Curated Selection</div>
+            </div>
+            <div className="text-center">
+              <div className="text-[#E4A853] text-2xl font-bold mb-2">Fast Delivery</div>
+              <div className="text-gray-600">Nationwide</div>
+            </div>
+            <div className="text-center">
+              <div className="text-[#E4A853] text-2xl font-bold mb-2">Expert Support</div>
+              <div className="text-gray-600">24/7 Available</div>
+            </div>
+            <div className="text-center">
+              <div className="text-[#E4A853] text-2xl font-bold mb-2">Easy Returns</div>
+              <div className="text-gray-600">30-Day Policy</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <NewsletterSection />
+
+      {/* Our Collections */}
+      <section className="py-16 bg-gray-50">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <div className="text-[#E4A853] mb-2">Our Collections</div>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Everything for</h2>
+            <h2 className="text-4xl font-bold text-[#E4A853] mb-6">your dream home.</h2>
+            <p className="text-gray-600">Curated excellence for the sophisticated home, from essentials to elegance.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Smart Furniture */}
+            <div className="group">
+              <div className="aspect-[4/3] rounded-lg overflow-hidden mb-4 relative">
+                <img
+                  src="/categories/smart-furniture.jpg"
+                  alt="Smart Furniture"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute top-4 left-4">
+                  <Badge variant="secondary" className="text-sm">Smart Furniture</Badge>
+                </div>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Smart Furniture</h3>
+              <p className="text-gray-600">Intelligent furniture for the modern home</p>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Smart Sofas</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Adjustable Beds</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Connected Tables</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Intelligent Storage</span>
+                </div>
+              </div>
+              <div className="mt-6 flex gap-4">
+                <a href="#" className="bg-black text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-black/90">View All</a>
+                <a href="#" className="border border-black px-6 py-2 rounded-full text-sm font-medium hover:bg-black/5">Explore</a>
+              </div>
+            </div>
+
+            {/* Bedding & Bath */}
+            <div className="group">
+              <div className="aspect-[4/3] rounded-lg overflow-hidden mb-4 relative">
+                <img
+                  src="/categories/bedding.jpg"
+                  alt="Bedding & Bath"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute top-4 left-4">
+                  <Badge variant="secondary" className="text-sm">Bedding & Bath</Badge>
+                </div>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Bedding & Bath</h3>
+              <p className="text-gray-600">Luxury bedding and bath essentials</p>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Premium Bedding</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Smart Mattresses</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Luxury Towels</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Bath Automation</span>
+                </div>
+              </div>
+              <div className="mt-6 flex gap-4">
+                <a href="#" className="bg-black text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-black/90">View All</a>
+                <a href="#" className="border border-black px-6 py-2 rounded-full text-sm font-medium hover:bg-black/5">Explore</a>
+              </div>
+            </div>
+
+            {/* Home Decor */}
+            <div className="group">
+              <div className="aspect-[4/3] rounded-lg overflow-hidden mb-4 relative">
+                <img
+                  src="/categories/decor.jpg"
+                  alt="Home Decor"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute top-4 left-4">
+                  <Badge variant="secondary" className="text-sm">Home Decor</Badge>
+                </div>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Home Decor</h3>
+              <p className="text-gray-600">Beautiful accents for your home</p>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Art Pieces</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Vases</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Mirrors</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4A853]"></span>
+                  <span className="text-sm text-gray-600">Rugs</span>
+                </div>
+              </div>
+              <div className="mt-6 flex gap-4">
+                <a href="#" className="bg-black text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-black/90">View All</a>
+                <a href="#" className="border border-black px-6 py-2 rounded-full text-sm font-medium hover:bg-black/5">Explore</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* All Collections */}
+      <section className="py-16 bg-gray-50">
+        <div className="container-max mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">all collections</h2>
+            <a href="#" className="text-[#E4A853] hover:text-[#E4A853]/90 font-medium">view all collections</a>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div className="bg-white rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">living room</h3>
+              <p className="text-sm text-gray-600">from ₦150,000</p>
+            </div>
+            <div className="bg-white rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">bedroom</h3>
+              <p className="text-sm text-gray-600">from ₦200,000</p>
+            </div>
+            <div className="bg-white rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">dining</h3>
+              <p className="text-sm text-gray-600">from ₦180,000</p>
+            </div>
+            <div className="bg-white rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">office</h3>
+              <p className="text-sm text-gray-600">from ₦120,000</p>
+            </div>
+            <div className="bg-white rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">outdoor</h3>
+              <p className="text-sm text-gray-600">from ₦250,000</p>
+            </div>
+            <div className="bg-white rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">decor</h3>
+              <p className="text-sm text-gray-600">from ₦15,000</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
+  )
+}
+
+// Category Card Component
+function CategoryCard({ title, price, images }: { title: string, price: string, images: string[] }) {
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        {images.map((image, index) => (
+          <div key={index} className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+            <img src={image} alt={`${title} ${index + 1}`} className="w-full h-full object-cover" />
+          </div>
+        ))}
+      </div>
+      <h3 className="text-lg font-medium group cursor-pointer">
+        <span className="flex items-center gap-2">
+          {title.toLowerCase()} from ₦{price}
+          <ArrowRight className="h-5 w-5 text-[#E4A853] transition-transform group-hover:translate-x-1" />
+        </span>
+      </h3>
+    </div>
+  )
+}
+
+// Product Card Component
+function ProductCard({
+  title,
+  price,
+  originalPrice,
+  image,
+  badge
+}: {
+  title: string
+  price: string
+  originalPrice?: string
+  image: string
+  badge?: { text: string; variant: 'default' | 'secondary' | 'destructive' }
+}) {
+  return (
+    <div className="group relative">
+      <div className="aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
+        <img
+          src={image}
+          alt={title}
+          className="h-full w-full object-cover object-center group-hover:opacity-75 transition-opacity"
+        />
+        {badge && (
+          <div className="absolute top-2 left-2">
+            <Badge variant={badge.variant} className="text-xs font-medium">
+              {badge.text}
+            </Badge>
+          </div>
+        )}
+      </div>
+      <div className="mt-4">
+        <h3 className="text-sm text-gray-700 font-medium">{title}</h3>
+        <div className="mt-1 flex items-center gap-2">
+          <p className="text-sm font-semibold text-gray-900">₦{price}</p>
+          {originalPrice && (
+            <p className="text-sm text-gray-500 line-through">₦{originalPrice}</p>
+          )}
+        </div>
+      </div>
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="bg-white/90 px-4 py-2 rounded-full text-sm font-medium text-gray-900 hover:bg-white">
+          Quick View
+        </div>
+      </div>
+    </div>
   )
 }
