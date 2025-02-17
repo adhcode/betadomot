@@ -1,28 +1,20 @@
-import type { Metadata } from "next";
-import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
-import "./globals.css";
-import { Header } from "@/components/smart-home/header";
-import { Footer } from "@/components/smart-home/footer";
-import { ScrollToTopButton } from "@/components/smart-home/scroll-to-top-button";
-import { NewsletterSection } from "@/components/smart-home/newsletter-section";
+import "./globals.css"
+import { Raleway } from 'next/font/google'
 import { Toaster } from 'sonner'
+import { Header } from '@/components/smart-home/header'
+import { Footer } from '@/components/smart-home/footer'
+import { ScrollToTopButton } from '@/components/smart-home/scroll-to-top-button'
 
-// Load Outfit for headings
-const outfit = Outfit({
+const raleway = Raleway({
   subsets: ['latin'],
-  variable: '--font-outfit',
-});
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+})
 
-// Load Plus Jakarta Sans for body text
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-jakarta',
-});
-
-export const metadata: Metadata = {
-  title: "Safirox - Energy Efficiency Solutions",
-  description: "Smart solutions for energy management and cost savings in Nigerian homes",
-};
+export const metadata = {
+  title: "Betadomot - Modern Home Solutions",
+  description: "Transform your space with minimalist home furniture, appliances, and energy-smart solutions.",
+}
 
 export default function RootLayout({
   children,
@@ -30,15 +22,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${outfit.variable} ${jakarta.variable}`}>
+    <html lang="en" className={raleway.className}>
+      <body className="antialiased">
         <Header />
         {children}
-        <NewsletterSection />
         <Footer />
         <ScrollToTopButton />
-        <Toaster />
+        <Toaster position="top-right" />
       </body>
     </html>
-  );
+  )
 }

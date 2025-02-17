@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import {
   Zap, Sun, Battery, Thermometer,
   ArrowRight, Calculator, LineChart,
-  Lightbulb, Coins, Shield, Info, Home
+  Lightbulb, Coins, Shield, Info, Home, Radio, Gift, Mail, Check
 } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -21,6 +21,7 @@ import {
 import { ConsumptionCalculator } from './learn/components/consumption-calculator'
 import { getProductsByCategory, type Product } from '@/data/products'
 import { ProductSuggestion } from '@/components/products/product-suggestion'
+import { motion } from "framer-motion"
 
 // Enhanced Calculator with validation and animations
 const EnergyCalculator = ({ onCalculate }: { onCalculate: (results: any) => void }) => {
@@ -339,6 +340,102 @@ const calculatorTypes = [
   }
 ]
 
+const featuredProducts = [
+  {
+    id: 'hybrid-inverter-5kva',
+    name: '5KVA Hybrid Inverter System',
+    image: '/products/hybrid-inverter.jpg',
+    price: 850000,
+    monthlyBill: '₦45,000 - ₦65,000',
+    description: 'Complete solar hybrid inverter system with lithium batteries',
+    benefits: [
+      'Reduces generator usage by 70%',
+      'Handles voltage fluctuations (140V-260V)',
+      'Smart load management',
+      'Mobile app monitoring'
+    ],
+    whyItWorks: 'Automatically switches between solar, grid, and battery power to minimize generator usage and maximize savings.',
+    savings: 'Average ₦35,000 monthly on fuel costs',
+    idealFor: 'Homes with 3-4 bedrooms running essential appliances',
+    features: [
+      {
+        title: 'Smart Load Management',
+        description: 'Prioritizes critical appliances during power outages'
+      },
+      {
+        title: 'Pure Sine Wave Output',
+        description: 'Safe for sensitive electronics and appliances'
+      },
+      {
+        title: 'Fast Charging',
+        description: '4-6 hours full charge from grid or generator'
+      }
+    ]
+  },
+  {
+    id: 'voltage-stabilizer-tns',
+    name: 'Servo Voltage Stabilizer',
+    image: '/products/stabilizer.jpg',
+    price: 145000,
+    monthlyBill: '₦15,000 - ₦25,000',
+    description: 'Industrial-grade voltage stabilizer with surge protection',
+    benefits: [
+      'Protects expensive appliances',
+      'Handles extreme voltage swings',
+      'Extends equipment lifespan',
+      'Zero maintenance required'
+    ],
+    whyItWorks: 'Maintains stable 220V output even when grid voltage drops to 140V or spikes to 290V, preventing damage to appliances.',
+    savings: 'Prevents ₦200,000+ in annual appliance repairs',
+    idealFor: 'Areas with frequent voltage fluctuations',
+    features: [
+      {
+        title: 'Wide Input Range',
+        description: '140V-290V input voltage range'
+      },
+      {
+        title: 'Digital Display',
+        description: 'Real-time voltage monitoring'
+      },
+      {
+        title: 'Surge Protection',
+        description: 'Built-in surge and lightning protection'
+      }
+    ]
+  },
+  {
+    id: 'smart-energy-monitor',
+    name: 'WiFi Energy Monitor',
+    image: '/products/energy-monitor.jpg',
+    price: 45000,
+    monthlyBill: '₦5,000 - ₦15,000',
+    description: 'Real-time power consumption monitoring system',
+    benefits: [
+      'Track energy usage in real-time',
+      'Identify power-hungry appliances',
+      'Set consumption alerts',
+      'Generate savings reports'
+    ],
+    whyItWorks: 'Provides detailed insights into power consumption patterns, helping identify wastage and optimize usage times.',
+    savings: 'Up to 30% reduction in monthly bills',
+    idealFor: 'Cost-conscious homes wanting to optimize consumption',
+    features: [
+      {
+        title: 'Mobile App',
+        description: 'Real-time monitoring and alerts'
+      },
+      {
+        title: 'Usage Analytics',
+        description: 'Detailed consumption patterns and trends'
+      },
+      {
+        title: 'Multi-Circuit Monitoring',
+        description: 'Track different areas separately'
+      }
+    ]
+  }
+]
+
 export default function HomePage() {
   const [selectedCalculator, setSelectedCalculator] = useState<string>('consumption')
   const [calculationResults, setCalculationResults] = useState<{
@@ -428,420 +525,841 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <main className="flex-1">
       {/* Hero Section */}
-      <div className="relative bg-[#003366] text-white">
-        <div className="max-w-7xl mx-auto px-4 py-24">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 mt-10 
-                animate-slide-in-left hover:translate-x-2 
-                transition-all duration-500 ease-out cursor-default"
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="relative min-h-[100vh]"
+      >
+        {/* Background with Parallax */}
+        <motion.div
+          initial={{ scale: 1.2 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="absolute inset-0 z-0"
+        >
+          <div className="relative w-full h-full">
+            <Image
+              src="/betadomot1.jpeg"
+              alt="Betadomot Home"
+              fill
+              className="object-cover object-center brightness-90"
+              priority
+              sizes="100vw"
+              quality={100}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/0 to-black/40" />
+          </div>
+        </motion.div>
+
+        {/* Hero Content with Stagger Animation */}
+        <div className="relative z-10 h-full">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 lg:pt-52">
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="max-w-2xl md:mt-6"
+            >
+              <motion.h1
+                className="text-5xl sm:text-6xl lg:text-8xl font-bold text-white mb-4 leading-none"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
               >
-                Smart Energy Solutions for Nigerian Homes
-              </h1>
-              <p className="text-xl mb-8 text-gray-200 
-                animate-slide-up animation-delay-200
-                hover:text-white transition-colors duration-300"
+                Elevate your
+                <br />
+                lifestyle.
+              </motion.h1>
+              <motion.span
+                className="text-5xl sm:text-6xl lg:text-8xl font-light text-[#E4A853]"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1.1 }}
               >
-                Learn how to optimize your home's energy use, reduce costs,
-                and ensure reliable power supply with our expert guides and solutions.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 animate-slide-up animation-delay-400">
-                <Link href="/learn" className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    className="w-full relative overflow-hidden group 
-                        bg-gradient-to-r from-white to-gray-100
-                        hover:from-gray-50 hover:to-white
-                        text-[#003366] font-semibold
-                        shadow-[0_4px_20px_-4px_rgba(255,255,255,0.3)]
-                        hover:shadow-[0_8px_30px_-4px_rgba(255,255,255,0.5)]
-                        transform hover:-translate-y-1 active:translate-y-0
-                        transition-all duration-300 ease-out
-                        border-0 hover:scale-[1.02]"
-                  >
-                    <span className="relative z-10 flex items-center justify-center 
-                        group-hover:text-[#004488] transition-all duration-300">
-                      Start Learning
-                      <ArrowRight className="ml-2 h-5 w-5 transform 
-                            group-hover:translate-x-3 group-hover:scale-110
-                            transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]" />
-                    </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/40 to-white/60 
-                        transform scale-x-0 group-hover:scale-x-100 
-                        transition-transform duration-500 origin-left" />
-                  </Button>
-                </Link>
-                <Link href="/services/energy-assessment" className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    className="w-full relative overflow-hidden group
-                        bg-transparent border-2 border-white/70
-                        hover:border-white text-white
-                        shadow-[0_4px_20px_-4px_rgba(255,255,255,0.1)]
-                        hover:shadow-[0_8px_30px_-4px_rgba(255,255,255,0.4)]
-                        transform hover:-translate-y-1 active:translate-y-0
-                        transition-all duration-300 ease-out
-                        hover:scale-[1.02]
-                        hover:bg-white/10"
-                  >
-                    <span className="relative z-10 flex items-center justify-center 
-                        group-hover:text-white transition-all duration-300">
-                      Get Assessment
-                      <ArrowRight className="ml-2 h-5 w-5 transform 
-                            group-hover:translate-x-3 group-hover:scale-110
-                            transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]" />
-                    </span>
-                    <div className="absolute inset-0 bg-gradient-to-r 
-                        from-white/5 via-white/20 to-white/5 
-                        transform -translate-x-full group-hover:translate-x-full 
-                        transition-transform duration-1000 ease-in-out" />
-                  </Button>
-                </Link>
+                Live brilliantly.
+              </motion.span>
+            </motion.div>
+          </div>
+
+          {/* Bottom Line with Slide Up */}
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.4 }}
+            className="absolute bottom-[-250px] left-0 right-0"
+          >
+            <div className="border-t border-white/20">
+              <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+                <div className="flex flex-col md:flex-row md:items-center justify-between py-4 md:h-14 gap-4 md:gap-0">
+                  <div className="text-white/80 text-sm order-1 md:order-none">
+                    Betadomot
+                  </div>
+                  <div className="text-white/70 text-sm text-center order-3 md:order-none">
+                    Modern living redefined.
+                    <br className="hidden md:block" />
+                    Smart homes crafted for the Nigerian elite.
+                  </div>
+                  <div className="text-white/80 text-sm order-2 md:order-none">
+                    Explore More
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="relative h-64 md:h-auto">
-              <Image
-                src="/illustrations/smart-home.svg"
-                alt="Smart home energy management"
-                fill
-                className="object-contain animate-float"
-              />
-            </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Calculator Section */}
-      <div id="calculators" className="max-w-7xl mx-auto px-4 py-16">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-3xl font-bold mb-6">Calculate & Save</h2>
-          {/* Calculator type selection buttons */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {calculatorTypes.map((calc) => (
-              <Card key={calc.id} className="overflow-hidden">
-                <div className="p-6">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="bg-[#003366]/10 p-3 rounded-lg">
-                      <calc.icon className="h-6 w-6 text-[#003366]" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">{calc.title}</h3>
-                      <p className="text-sm text-gray-600">{calc.description}</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4 mb-6">
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                      <h4 className="font-medium text-left mb-2">How it works:</h4>
-                      <p className="text-sm text-left text-gray-600">{calc.explanation}</p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <h4 className="font-medium">This calculator helps you:</h4>
-                      <ul className="space-y-2">
-                        {calc.benefits.map((benefit, index) => (
-                          <li key={index} className="text-sm text-gray-600 flex items-start gap-2">
-                            <div className="mt-1.5">
-                              <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                            </div>
-                            <span>{benefit}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <Button
-                    className="w-full relative overflow-hidden group 
-                        bg-gradient-to-r from-[#003366] to-[#004488]
-                        hover:from-[#004488] hover:to-[#003366]
-                        text-white font-semibold
-                        shadow-md hover:shadow-xl
-                        transform hover:-translate-y-1 active:translate-y-0
-                        transition-all duration-300 ease-out
-                        hover:scale-[1.02]"
-                    onClick={() => {
-                      setSelectedCalculator(calc.id)
-                      handleCalculatorToggle()
-                    }}
-                  >
-                    <span className="flex items-center justify-center">
-                      Use Calculator
-                      <ArrowRight className="ml-2 h-4 w-4 transform 
-                            group-hover:translate-x-3 group-hover:scale-110
-                            transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]" />
-                    </span>
-                  </Button>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Active Calculator */}
-        {showCalculator && (
-          <div className={`mt-8 transition-all duration-500 ${transitionDirection === 'in' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}>
-            <Card className="overflow-hidden">
-              <div className="bg-[#003366] p-4 text-white flex justify-between items-center">
-                <h3 className="text-xl font-bold">
-                  {selectedCalculator === 'consumption' ? 'Daily Power Usage' : 'Potential Savings'}
-                </h3>
+      {/* Energy Bills Section with Scroll Animation */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        className="relative py-32 lg:py-40 overflow-hidden"
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+            {/* Left Content with Stagger */}
+            <motion.div
+              initial={{ x: -100, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="flex-1 max-w-2xl"
+            >
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-6 leading-none">
+                Betadomot
+                <br />
+                <span className="text-[#E4A853]">pay less energy bills.</span>
+              </h2>
+              <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-lg leading-relaxed">
+                Tired of outrageous energy bills? Our solutions help Nigerian homes save
+                <span className="text-[#E4A853] font-semibold"> millions yearly</span> while enjoying
+                <span className="text-black font-semibold"> constant power supply</span>.
+              </p>
+              <Link href="/learn">
                 <Button
-                  variant="ghost"
-                  className="text-white hover:text-white/90 relative overflow-hidden group
-                      hover:bg-white/10
-                      transform hover:-translate-y-1 active:translate-y-0
-                      transition-all duration-300 ease-out"
-                  onClick={handleCalculatorToggle}
+                  className="group bg-black hover:bg-black/90 text-white px-8 h-14 
+                    text-base transition-all duration-300 rounded-full"
                 >
-                  <span className="flex items-center justify-center">
-                    Close
-                  </span>
+                  Learn how
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
-              </div>
-              <div className="p-6">
-                {/* Instructions Panel */}
-                <div className="mb-6 bg-blue-50 p-4 rounded-lg">
-                  <h4 className="font-medium mb-2">Instructions:</h4>
-                  {selectedCalculator === 'consumption' ? (
-                    <ol className="space-y-2 text-sm text-gray-600">
-                      <li>1. Add each appliance you use regularly</li>
-                      <li>2. Enter the power rating in watts (check the appliance label)</li>
-                      <li>3. Specify daily usage hours</li>
-                      <li>4. View your total consumption and cost analysis</li>
-                    </ol>
-                  ) : (
-                    <ol className="space-y-2 text-sm text-gray-600">
-                      <li>1. Enter your average monthly NEPA/PHCN bill</li>
-                      <li>2. Input daily generator running hours</li>
-                      <li>3. Specify current fuel cost per liter</li>
-                      <li>4. See your potential monthly and annual savings</li>
-                    </ol>
-                  )}
-                </div>
+              </Link>
+            </motion.div>
 
-                {/* Loading Overlay */}
-                <div className={`relative ${calculatorState === 'calculating' ? 'pointer-events-none' : ''}`}>
-                  {calculatorState === 'calculating' && (
-                    <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
-                      <div className="text-center">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#003366] mb-4"></div>
-                        <p className="text-[#003366] font-medium">Analyzing your usage...</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {selectedCalculator === 'consumption' ? (
-                    <ConsumptionCalculator
-                      onCalculate={(results) => handleCalculationResults(results)}
-                    />
-                  ) : (
-                    <EnergyCalculator
-                      onCalculate={(results) => handleCalculationResults(results)}
-                    />
-                  )}
-                </div>
-              </div>
-            </Card>
-          </div>
-        )}
-
-        {/* Enhanced Product Recommendations */}
-        {recommendedProducts.length > 0 && (
-          <div className={`mt-16 transition-all duration-500 ${calculatorState === 'complete' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}>
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold mb-4">Recommended Solutions</h3>
-              <p className="text-gray-600">
-                Based on your usage patterns, here are the most cost-effective solutions for your needs:
-              </p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              {recommendedProducts.map((product) => (
-                <ProductSuggestion
-                  key={product.id}
-                  title={product.name}
-                  description={product.description}
-                  price={product.price}
-                  savings={product.savings}
-                  image={product.image}
-                  href={`/products/${product.id}`}
+            {/* Right Image with Float Animation */}
+            <motion.div
+              initial={{ x: 100, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="flex-1 relative w-full aspect-square lg:aspect-auto lg:h-[600px]"
+            >
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -right-4 -bottom-4 w-full h-full border border-[#E4A853]/20 rounded-2xl"
+              />
+              <div className="relative w-full h-full rounded-2xl overflow-hidden">
+                <Image
+                  src="/powersaving2.jpeg"
+                  alt="Energy Savings Visualization"
+                  fill
+                  className="object-cover"
+                  priority
                 />
-              ))}
-            </div>
+              </div>
+            </motion.div>
           </div>
-        )}
-      </div>
+        </div>
+      </motion.div>
 
-      {/* Customer Benefits Section */}
-      <div className="bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 py-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Save Energy?</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Smart energy management in Nigeria goes beyond cost savings.
-              Protect your appliances, ensure reliable power, and enjoy a
-              more comfortable home—while saving up to 40% on monthly bills.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {customerBenefits.map((benefit, index) => (
-              <Card
-                key={index}
-                className="group overflow-hidden hover:shadow-xl transition-all duration-300 
-                    transform hover:-translate-y-1 hover:scale-[1.02]
-                    bg-gradient-to-b from-white to-gray-50/50"
-              >
-                <div className="p-6 flex flex-col h-full">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="relative group-hover:rotate-3 transition-transform duration-300">
-                      {/* Glow effect background */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#003366]/20 to-[#004488]/20 
-                          blur-xl group-hover:blur-2xl transition-all duration-300 rounded-full"
-                      />
+      {/* Product Categories with Grid Animation */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="relative py-32 bg-white"
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          {/* Header with Fade Up */}
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <span className="text-sm font-medium text-[#E4A853] mb-4 block">
+              Our Collections
+            </span>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-6 leading-none">
+              Curated for
+              <br />
+              <span className="text-[#E4A853]">modern living.</span>
+            </h2>
+          </motion.div>
 
-                      {/* Icon container */}
-                      <div className="relative bg-gradient-to-br from-[#003366] to-[#004488] 
-                          p-3.5 rounded-xl text-white transform group-hover:scale-110 
-                          transition-all duration-300 ease-out
-                          shadow-lg group-hover:shadow-xl
-                          border border-white/10"
-                      >
-                        <benefit.icon className="h-5 w-5 stroke-[1.5]" />
-                      </div>
-                    </div>
-
-                    <h3 className="font-semibold text-lg text-[#003366] 
-                        group-hover:text-[#004488] transition-colors duration-300"
-                    >
-                      {benefit.title}
-                    </h3>
-                  </div>
-                  <p className="text-gray-600 group-hover:text-gray-700 
-                      transition-colors duration-300 mb-6"
+          {/* Grid with Stagger */}
+          <motion.div
+            variants={{
+              show: {
+                transition: {
+                  staggerChildren: 0.2
+                }
+              }
+            }}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {/* Product Cards with Hover Effects */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                show: { opacity: 1, y: 0 }
+              }}
+              className="group relative overflow-hidden rounded-2xl bg-gray-100"
+            >
+              <div className="aspect-square relative">
+                <Image
+                  src="/smarthome.jpeg"
+                  alt="Smart Appliances"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
+                <h3 className="text-2xl font-bold text-white mb-4">Smart Appliances</h3>
+                <p className="text-white/90 mb-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  Energy-efficient appliances that learn your lifestyle and save you money.
+                </p>
+                <Link href="/categories/smart-appliances">
+                  <Button
+                    className="bg-white text-black hover:bg-white/90 
+                      transition-all duration-300 rounded-full px-6"
                   >
-                    {benefit.description}
-                  </p>
-                  <div className="space-y-3">
-                    {benefit.details.map((point, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-3 text-gray-600 
-                            group-hover:text-gray-700 transition-colors duration-300
-                            hover:translate-x-1 transition-transform duration-200"
-                      >
-                        <div className="mt-1.5 transform group-hover:scale-110 
-                            transition-transform duration-300">
-                          <div className="h-1.5 w-1.5 rounded-full 
-                              bg-gradient-to-r from-[#003366] to-[#004488]" />
-                        </div>
-                        <span className="text-sm">{point}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-8 pt-4 border-t border-gray-100">
-                    <Link href={benefit.href}>
-                      <Button
-                        className="w-full relative overflow-hidden group
-                            bg-gradient-to-r from-[#003366] to-[#004488]
-                            hover:from-[#004488] hover:to-[#003366]
-                            text-white font-semibold
-                            shadow-md hover:shadow-xl
-                            transform hover:-translate-y-1 active:translate-y-0
-                            transition-all duration-300 ease-out
-                            hover:scale-[1.02]"
-                      >
-                        <span className="flex items-center justify-center">
-                          Learn More
-                          <ArrowRight className="ml-2 h-4 w-4 transform 
-                              group-hover:translate-x-3 group-hover:scale-110
-                              transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]" />
-                        </span>
-                      </Button>
-                    </Link>
-                  </div>
+                    Explore
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* Home Electronics */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                show: { opacity: 1, y: 0 }
+              }}
+              className="group relative overflow-hidden rounded-2xl"
+            >
+              <div className="aspect-square relative">
+                <Image
+                  src="/appliance.jpeg"
+                  alt="Home Electronics"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
+                <h3 className="text-2xl font-bold text-white mb-4">Home Electronics</h3>
+                <p className="text-white/90 mb-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  Premium electronics that blend seamlessly with your space.
+                </p>
+                <Link href="/categories/electronics">
+                  <Button
+                    className="bg-white text-black hover:bg-white/90 
+                      transition-all duration-300 rounded-full px-6"
+                  >
+                    Discover
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* Home Accessories */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                show: { opacity: 1, y: 0 }
+              }}
+              className="group relative overflow-hidden rounded-2xl"
+            >
+              <div className="aspect-square relative">
+                <Image
+                  src="/accesories.jpeg"
+                  alt="Home Accessories"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
+                <h3 className="text-2xl font-bold text-white mb-4">Home Accessories</h3>
+                <p className="text-white/90 mb-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  Elevate your space with carefully curated accessories.
+                </p>
+                <Link href="/categories/accessories">
+                  <Button
+                    className="bg-white text-black hover:bg-white/90 
+                      transition-all duration-300 rounded-full px-6"
+                  >
+                    View All
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Home Improvement Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="relative py-32 bg-gray-50"
+      >
+        {/* Section Header */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mb-20 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12"
+        >
+          <span className="text-sm font-medium text-[#E4A853] mb-4 block">
+            Home Improvement
+          </span>
+          <h2 className="text-4xl sm:text-5xl font-bold text-[#1A1A1A] mb-6">
+            Transform your space
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Discover how our solutions can enhance every aspect of your home
+          </p>
+        </motion.div>
+
+        {/* Stacked Sections */}
+        <div className="space-y-32">
+          {/* Comfort & Climate Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+              <div className="flex flex-col lg:flex-row items-center gap-12">
+                <div className="flex-1 lg:order-2">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="relative rounded-2xl overflow-hidden shadow-2xl"
+                  >
+                    <Image
+                      src="/home-improvement/climate-control.jpg"
+                      alt="Smart Climate Control"
+                      width={600}
+                      height={400}
+                      className="object-cover w-full h-[400px]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  </motion.div>
                 </div>
-              </Card>
-            ))}
+                <div className="flex-1 lg:order-1">
+                  <h3 className="text-3xl font-bold mb-6">
+                    Smart Climate
+                    <span className="text-[#E4A853]"> Control</span>
+                  </h3>
+                  <p className="text-gray-600 mb-8 text-lg">
+                    Experience perfect comfort with our intelligent climate control systems.
+                    Automatically adjusts to your preferences while optimizing energy usage.
+                  </p>
+                  <ul className="space-y-4 mb-8">
+                    {[
+                      "Temperature automation",
+                      "Humidity control",
+                      "Air quality monitoring",
+                      "Energy optimization"
+                    ].map((feature, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-center gap-3 text-gray-700"
+                      >
+                        <Check className="h-5 w-5 text-[#E4A853]" />
+                        {feature}
+                      </motion.li>
+                    ))}
+                  </ul>
+                  <Button
+                    className="bg-[#1A1A1A] hover:bg-[#E4A853] text-white hover:text-black
+                      transition-all duration-300"
+                  >
+                    Learn More
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Security Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative bg-[#1A1A1A] py-32"
+          >
+            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+              <div className="flex flex-col lg:flex-row items-center gap-12">
+                <div className="flex-1">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="relative rounded-2xl overflow-hidden shadow-2xl"
+                  >
+                    <Image
+                      src="/home-improvement/security.jpg"
+                      alt="Smart Security"
+                      width={600}
+                      height={400}
+                      className="object-cover w-full h-[400px]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  </motion.div>
+                </div>
+                <div className="flex-1 text-white">
+                  <h3 className="text-3xl font-bold mb-6">
+                    Advanced
+                    <span className="text-[#E4A853]"> Security</span>
+                  </h3>
+                  <p className="text-gray-400 mb-8 text-lg">
+                    Protect your home with cutting-edge security systems.
+                    Monitor and control access from anywhere in the world.
+                  </p>
+                  <ul className="space-y-4 mb-8">
+                    {[
+                      "24/7 monitoring",
+                      "Smart cameras",
+                      "Biometric access",
+                      "Mobile notifications"
+                    ].map((feature, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-center gap-3 text-gray-300"
+                      >
+                        <Check className="h-5 w-5 text-[#E4A853]" />
+                        {feature}
+                      </motion.li>
+                    ))}
+                  </ul>
+                  <Button
+                    className="bg-[#E4A853] hover:bg-white text-black
+                      transition-all duration-300"
+                  >
+                    Learn More
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Entertainment Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+              <div className="flex flex-col lg:flex-row items-center gap-12">
+                <div className="flex-1 lg:order-2">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="relative rounded-2xl overflow-hidden shadow-2xl"
+                  >
+                    <Image
+                      src="/home-improvement/entertainment.jpg"
+                      alt="Home Entertainment"
+                      width={600}
+                      height={400}
+                      className="object-cover w-full h-[400px]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  </motion.div>
+                </div>
+                <div className="flex-1 lg:order-1">
+                  <h3 className="text-3xl font-bold mb-6">
+                    Premium
+                    <span className="text-[#E4A853]"> Entertainment</span>
+                  </h3>
+                  <p className="text-gray-600 mb-8 text-lg">
+                    Transform your home into an entertainment paradise with our
+                    state-of-the-art audio-visual solutions.
+                  </p>
+                  <ul className="space-y-4 mb-8">
+                    {[
+                      "Smart TV integration",
+                      "Multi-room audio",
+                      "Home theater",
+                      "Voice control"
+                    ].map((feature, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-center gap-3 text-gray-700"
+                      >
+                        <Check className="h-5 w-5 text-[#E4A853]" />
+                        {feature}
+                      </motion.li>
+                    ))}
+                  </ul>
+                  <Button
+                    className="bg-[#1A1A1A] hover:bg-[#E4A853] text-white hover:text-black
+                      transition-all duration-300"
+                  >
+                    Learn More
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Testimonials Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="relative py-32 bg-white"
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <span className="text-sm font-medium text-[#E4A853] mb-4 block">
+              Testimonials
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-bold text-[#1A1A1A] mb-6">
+              What our clients say
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Testimonial Cards */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-gray-50 rounded-2xl p-8"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden">
+                  <Image
+                    src="/testimonials/client1.jpg"
+                    alt="Client"
+                    width={48}
+                    height={48}
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <h4 className="font-bold">Sarah Johnson</h4>
+                  <p className="text-sm text-gray-600">Lagos, Nigeria</p>
+                </div>
+              </div>
+              <p className="text-gray-600">
+                "Betadomot transformed our home into a smart, energy-efficient space.
+                The savings on our electricity bills have been remarkable."
+              </p>
+            </motion.div>
+
+            {/* Add more testimonial cards */}
           </div>
         </div>
-      </div>
-
-      {/* Recommended Products Section */}
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Popular Energy Solutions</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Trusted products that help Nigerian homes achieve energy independence.
-          </p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Add ProductCard components here with top recommended products */}
-          {/* We can pull these from your products data */}
-        </div>
-        <div className="text-center mt-8">
-          <Link href="/products">
-            <Button variant="outline" size="lg">
-              View All Products
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
-        </div>
-      </div>
-
-      {/* Learning Topics */}
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold mb-12 text-center">Popular Learning Topics</h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <Link href="/learn/solar-power">
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="bg-[#003366]/10 p-3 rounded-lg">
-                  <Sun className="h-6 w-6 text-[#003366]" />
-                </div>
-                <h3 className="font-semibold">Solar Power Solutions</h3>
-              </div>
-              <p className="text-gray-600">
-                Learn about solar system components, sizing, and ROI calculations
-                for Nigerian homes.
-              </p>
-            </Card>
-          </Link>
-          <Link href="/learn/backup-power">
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="bg-[#003366]/10 p-3 rounded-lg">
-                  <Battery className="h-6 w-6 text-[#003366]" />
-                </div>
-                <h3 className="font-semibold">Backup Power Systems</h3>
-              </div>
-              <p className="text-gray-600">
-                Compare different backup power options and find the best solution
-                for your needs.
-              </p>
-            </Card>
-          </Link>
-        </div>
-      </div>
+      </motion.div>
 
       {/* CTA Section */}
-      <div className="bg-[#003366] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Optimize Your Home's Energy?</h2>
-          <p className="text-xl mb-8 text-gray-200">
-            Start your journey to energy efficiency and reliable power supply today.
-          </p>
-          <Link href="/services/energy-assessment">
-            <Button size="lg" variant="secondary">
-              Get Started
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="relative py-32 bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] text-white overflow-hidden"
+      >
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[url('/patterns/circuit.svg')] opacity-5" />
+          <motion.div
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.2, 0.1, 0.2]
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="absolute top-0 left-0 w-full h-full bg-gradient-radial from-[#E4A853]/10 to-transparent"
+          />
         </div>
-      </div>
-    </div>
+
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
+            {/* Content */}
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              className="flex-1 text-center lg:text-left"
+            >
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="inline-block text-sm font-medium text-[#E4A853] mb-4"
+              >
+                Get Started Today
+              </motion.span>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-4xl md:text-5xl font-bold mb-6 leading-tight"
+              >
+                Ready to transform
+                <span className="block text-[#E4A853]">your living space?</span>
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="text-xl text-blue-100/90 mb-8 max-w-xl mx-auto lg:mx-0"
+              >
+                Book a consultation with our experts and discover how to make your home smarter, more efficient, and truly exceptional.
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+              >
+                <Link href="/services/design-consultation">
+                  <Button
+                    className="bg-[#E4A853] text-black hover:bg-[#FFD700] 
+                      px-8 py-6 text-lg font-medium
+                      transform hover:-translate-y-1
+                      transition-all duration-300
+                      shadow-lg hover:shadow-xl"
+                  >
+                    Book a Free Consultation
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+                <Link href="/portfolio">
+                  <Button
+                    variant="outline"
+                    className="border-white/30 text-white hover:bg-white/10
+                      px-8 py-6 text-lg font-medium
+                      transition-all duration-300"
+                  >
+                    View Our Portfolio
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+              </motion.div>
+            </motion.div>
+
+            {/* Features List */}
+            <motion.div
+              initial={{ x: 50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              className="flex-1 grid grid-cols-2 gap-6"
+            >
+              {[
+                { title: "Free Consultation", description: "Expert advice tailored to your needs" },
+                { title: "Quick Installation", description: "Professional setup within days" },
+                { title: "24/7 Support", description: "Round-the-clock technical assistance" },
+                { title: "Flexible Payment", description: "Convenient payment options" }
+              ].map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + index * 0.1 }}
+                  className="bg-white/5 backdrop-blur-sm rounded-xl p-6 hover:bg-white/10 
+                    transition-all duration-300 border border-white/10"
+                >
+                  <h3 className="text-lg font-semibold mb-2 text-[#E4A853]">
+                    {feature.title}
+                  </h3>
+                  <p className="text-white/80 text-sm">
+                    {feature.description}
+                  </p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Newsletter Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="relative py-32 bg-gradient-to-br from-[#003366] to-[#002244]"
+      >
+        {/* Background Effects */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-[url('/patterns/grid.svg')] opacity-5" />
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.2, 0.1, 0.2]
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-radial from-[#E4A853]/10 to-transparent"
+          />
+          <motion.div
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.1, 0.2, 0.1]
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-radial from-[#003366]/10 to-transparent"
+          />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            className="max-w-2xl mx-auto text-center"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <span className="inline-block text-sm font-medium bg-gradient-to-r from-[#E4A853] to-[#FFD700] 
+                text-transparent bg-clip-text mb-4">
+                Join Our Community
+              </span>
+              <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight">
+                Stay ahead with smart living
+                <span className="block text-[#E4A853]">updates & insights</span>
+              </h2>
+              <p className="text-lg text-gray-400 mb-10">
+                Get expert tips, exclusive offers, and the latest innovations in smart home technology
+                delivered straight to your inbox.
+              </p>
+            </motion.div>
+
+            <motion.form
+              onSubmit={(e) => e.preventDefault()}
+              className="relative flex flex-col sm:flex-row gap-4 max-w-xl mx-auto"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="relative flex-1">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="h-14 bg-white/10 border-white/20 text-white placeholder:text-gray-400
+                    focus:bg-white/15 transition-all duration-300 pr-12"
+                />
+                <Mail className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              </div>
+              <Button
+                className="h-14 px-8 bg-[#E4A853] hover:bg-[#FFD700]
+                  text-black font-medium transition-all duration-300 
+                  shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                Subscribe
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </motion.form>
+
+            <motion.p
+              className="text-sm text-gray-500 mt-4"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              By subscribing, you agree to our Privacy Policy and consent to receive updates.
+            </motion.p>
+          </motion.div>
+
+          {/* Features Grid */}
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20"
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+          >
+            {[
+              { icon: Zap, text: "Exclusive Deals", delay: 0 },
+              { icon: Lightbulb, text: "Energy Tips", delay: 0.1 },
+              { icon: Home, text: "Home Guides", delay: 0.2 },
+              { icon: Gift, text: "Special Rewards", delay: 0.3 }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                variants={{
+                  hidden: { y: 20, opacity: 0 },
+                  show: { y: 0, opacity: 1 }
+                }}
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="text-center group"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-[#E4A853]/20 to-[#E4A853]/5 
+                  rounded-xl flex items-center justify-center mx-auto mb-4 
+                  group-hover:from-[#E4A853]/30 group-hover:to-[#E4A853]/10 transition-all duration-300"
+                >
+                  <item.icon className="h-6 w-6 text-[#E4A853]" />
+                </div>
+                <p className="text-white font-medium">{item.text}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </motion.div>
+    </main>
   )
 }

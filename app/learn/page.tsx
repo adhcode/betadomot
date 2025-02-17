@@ -10,6 +10,10 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { motion } from "framer-motion"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ConsumptionCalculator } from './components/consumption-calculator'
+import { SavingsCalculator } from './components/savings-calculator'
 
 const energyTopics = [
     {
@@ -172,6 +176,11 @@ const learnTopics = [
 ]
 
 export default function LearnPage() {
+    const handleCalculate = (results: any) => {
+        // Handle calculation results
+        console.log(results)
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-20">
             <PageHeader
@@ -277,6 +286,66 @@ export default function LearnPage() {
                     ))}
                 </div>
             </div>
+
+            <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="max-w-7xl mx-auto px-6 py-24"
+            >
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="max-w-3xl mx-auto text-center mb-16"
+                >
+                    <h1 className="text-4xl sm:text-5xl font-bold mb-6">
+                        Smart Home
+                        <span className="text-[#E4A853]"> Calculators</span>
+                    </h1>
+                    <p className="text-xl text-gray-600">
+                        Understand your energy usage and discover potential savings with our smart calculators.
+                    </p>
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                >
+                    <Tabs defaultValue="consumption" className="max-w-4xl mx-auto">
+                        <TabsList className="grid grid-cols-2 w-full mb-12">
+                            <TabsTrigger value="consumption" className="text-lg py-4">
+                                Energy Consumption
+                            </TabsTrigger>
+                            <TabsTrigger value="savings" className="text-lg py-4">
+                                Savings Calculator
+                            </TabsTrigger>
+                        </TabsList>
+
+                        <TabsContent value="consumption">
+                            <ConsumptionCalculator onCalculate={handleCalculate} />
+                        </TabsContent>
+
+                        <TabsContent value="savings">
+                            <SavingsCalculator />
+                        </TabsContent>
+                    </Tabs>
+
+                    {/* Results Section */}
+                    <div className="mt-16 bg-gray-50 rounded-2xl p-8">
+                        <div className="grid md:grid-cols-2 gap-8">
+                            <div className="space-y-4">
+                                <h3 className="text-2xl font-bold">Your Results</h3>
+                                {/* Combined results display */}
+                            </div>
+                            <div className="space-y-4">
+                                <h3 className="text-2xl font-bold">Recommendations</h3>
+                                {/* Product recommendations based on calculations */}
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+            </motion.div>
         </div>
     )
 } 
