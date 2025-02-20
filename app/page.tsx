@@ -558,7 +558,7 @@ export default function HomePage() {
 
         {/* Hero Content with Stagger Animation */}
         <div className="relative z-10 h-full">
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 lg:pt-52">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-48 lg:pt-52">
             <motion.div
               initial={{ y: 100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -575,6 +575,7 @@ export default function HomePage() {
                 <br />
                 lifestyle.
               </motion.h1>
+
               <motion.span
                 className="text-5xl sm:text-6xl lg:text-8xl font-bold text-[#E4A853]"
                 initial={{ opacity: 0, y: 20 }}
@@ -584,6 +585,11 @@ export default function HomePage() {
                 Live brilliantly.
               </motion.span>
             </motion.div>
+            <div className="text-white/70 text-2xl text-left mt-12 mb-48 order-3 md:hidden">
+              Modern living redefined.
+              <br className="block" />
+              Smart homes crafted for the Nigerian elite.
+            </div>
           </div>
 
           {/* Bottom Line with Slide Up */}
@@ -596,16 +602,16 @@ export default function HomePage() {
             <div className="border-t border-white/20">
               <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
                 <div className="flex flex-col md:flex-row md:items-center justify-between py-4 md:h-14 gap-4 md:gap-0">
-                  <div className="text-white/80 text-sm order-1 md:order-none">
+                  <div className="text-white/80 text-sm order-1 md:order-none hidden md:block">
                     Betadomot
                   </div>
-                  <div className="text-white/70 text-sm text-center order-3 md:order-none">
+                  <div className="text-white/70 text-sm text-center order-3 md:order-none hidden md:block">
                     Modern living redefined.
                     <br className="hidden md:block" />
                     Smart homes crafted for the Nigerian elite.
                   </div>
-                  <div className="text-white/80 text-sm order-2 md:order-none">
-                    Explore More
+                  <div className="text-white/80 text-lg order-2 md:order-none">
+                    Explore Products
                   </div>
                 </div>
               </div>

@@ -3,7 +3,6 @@ import { Raleway } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { Header } from '@/components/smart-home/header'
 import { Footer } from '@/components/smart-home/footer'
-import { ScrollToTopButton } from '@/components/smart-home/scroll-to-top-button'
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -27,7 +26,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        <ScrollToTopButton />
+
         <Toaster position="top-right" />
       </body>
     </html>

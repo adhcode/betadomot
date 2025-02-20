@@ -14,4 +14,4 @@ export const spacing = {
     container: 'max-w-7xl mx-auto px-6 sm:px-8 lg:px-12',
     sectionHead: 'text-center mb-16',
     gridGap: 'gap-8 md:gap-12',
-}
+} 
