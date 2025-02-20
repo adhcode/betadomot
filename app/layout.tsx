@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={raleway.className}>
-      <body className="antialiased">
+      <body className="antialiased min-h-screen overflow-x-hidden">
         <Header />
         {children}
         <Footer />

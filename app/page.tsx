@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import {
   Zap, Sun, Battery, Thermometer,
   ArrowRight, Calculator, LineChart,
-  Lightbulb, Coins, Shield, Info, Home, Radio, Gift, Mail, Check
+  Lightbulb, Coins, Shield, Info, Home, Radio, Gift, Mail, Check, Lock
 } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -22,6 +22,9 @@ import { ConsumptionCalculator } from './learn/components/consumption-calculator
 import { getProductsByCategory, type Product } from '@/data/products'
 import { ProductSuggestion } from '@/components/products/product-suggestion'
 import { motion } from "framer-motion"
+import { ProductShowcase } from "@/components/home/product-showcase"
+import { BlogSection } from "@/components/blog-section"
+import { spacing } from '@/lib/constants'
 
 // Enhanced Calculator with validation and animations
 const EnergyCalculator = ({ onCalculate }: { onCalculate: (results: any) => void }) => {
@@ -573,7 +576,7 @@ export default function HomePage() {
                 lifestyle.
               </motion.h1>
               <motion.span
-                className="text-5xl sm:text-6xl lg:text-8xl font-light text-[#E4A853]"
+                className="text-5xl sm:text-6xl lg:text-8xl font-bold text-[#E4A853]"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1.1 }}
@@ -676,540 +679,300 @@ export default function HomePage() {
         </div>
       </motion.div>
 
-      {/* Product Categories with Grid Animation */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="relative py-32 bg-white"
-      >
+      {/* Security Section - Image on Left */}
+      <motion.div className="relative py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          {/* Header with Fade Up */}
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
-          >
-            <span className="text-sm font-medium text-[#E4A853] mb-4 block">
-              Our Collections
-            </span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-6 leading-none">
-              Curated for
-              <br />
-              <span className="text-[#E4A853]">modern living.</span>
-            </h2>
-          </motion.div>
-
-          {/* Grid with Stagger */}
-          <motion.div
-            variants={{
-              show: {
-                transition: {
-                  staggerChildren: 0.2
-                }
-              }
-            }}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {/* Product Cards with Hover Effects */}
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
+            {/* Left Image with Float Animation */}
             <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 50 },
-                show: { opacity: 1, y: 0 }
-              }}
-              className="group relative overflow-hidden rounded-2xl bg-gray-100"
+              initial={{ x: -100, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="flex-1 relative w-full aspect-square lg:aspect-auto lg:h-[600px]"
             >
-              <div className="aspect-square relative">
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -left-4 -bottom-4 w-full h-full border border-[#E4A853]/20 rounded-2xl"
+              />
+              <div className="relative w-full h-full rounded-2xl overflow-hidden">
                 <Image
-                  src="/smarthome.jpeg"
-                  alt="Smart Appliances"
+                  src="/secure-home.jpg"
+                  alt="Home Security System"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="object-cover"
+                  priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
-                <h3 className="text-2xl font-bold text-white mb-4">Smart Appliances</h3>
-                <p className="text-white/90 mb-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  Energy-efficient appliances that learn your lifestyle and save you money.
-                </p>
-                <Link href="/categories/smart-appliances">
-                  <Button
-                    className="bg-white text-black hover:bg-white/90 
-                      transition-all duration-300 rounded-full px-6"
-                  >
-                    Explore
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
               </div>
             </motion.div>
 
-            {/* Home Electronics */}
+            {/* Content */}
             <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 50 },
-                show: { opacity: 1, y: 0 }
-              }}
-              className="group relative overflow-hidden rounded-2xl"
+              initial={{ x: 100, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="flex-1 max-w-2xl"
             >
-              <div className="aspect-square relative">
-                <Image
-                  src="/appliance.jpeg"
-                  alt="Home Electronics"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
-                <h3 className="text-2xl font-bold text-white mb-4">Home Electronics</h3>
-                <p className="text-white/90 mb-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  Premium electronics that blend seamlessly with your space.
-                </p>
-                <Link href="/categories/electronics">
-                  <Button
-                    className="bg-white text-black hover:bg-white/90 
-                      transition-all duration-300 rounded-full px-6"
-                  >
-                    Discover
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-
-            {/* Home Accessories */}
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 50 },
-                show: { opacity: 1, y: 0 }
-              }}
-              className="group relative overflow-hidden rounded-2xl"
-            >
-              <div className="aspect-square relative">
-                <Image
-                  src="/accesories.jpeg"
-                  alt="Home Accessories"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
-                <h3 className="text-2xl font-bold text-white mb-4">Home Accessories</h3>
-                <p className="text-white/90 mb-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  Elevate your space with carefully curated accessories.
-                </p>
-                <Link href="/categories/accessories">
-                  <Button
-                    className="bg-white text-black hover:bg-white/90 
-                      transition-all duration-300 rounded-full px-6"
-                  >
-                    View All
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* Home Improvement Section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="relative py-32 bg-gray-50"
-      >
-        {/* Section Header */}
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-20 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12"
-        >
-          <span className="text-sm font-medium text-[#E4A853] mb-4 block">
-            Home Improvement
-          </span>
-          <h2 className="text-4xl sm:text-5xl font-bold text-[#1A1A1A] mb-6">
-            Transform your space
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover how our solutions can enhance every aspect of your home
-          </p>
-        </motion.div>
-
-        {/* Stacked Sections */}
-        <div className="space-y-32">
-          {/* Comfort & Climate Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-              <div className="flex flex-col lg:flex-row items-center gap-12">
-                <div className="flex-1 lg:order-2">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="relative rounded-2xl overflow-hidden shadow-2xl"
-                  >
-                    <Image
-                      src="/home-improvement/climate-control.jpg"
-                      alt="Smart Climate Control"
-                      width={600}
-                      height={400}
-                      className="object-cover w-full h-[400px]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  </motion.div>
-                </div>
-                <div className="flex-1 lg:order-1">
-                  <h3 className="text-3xl font-bold mb-6">
-                    Smart Climate
-                    <span className="text-[#E4A853]"> Control</span>
-                  </h3>
-                  <p className="text-gray-600 mb-8 text-lg">
-                    Experience perfect comfort with our intelligent climate control systems.
-                    Automatically adjusts to your preferences while optimizing energy usage.
-                  </p>
-                  <ul className="space-y-4 mb-8">
-                    {[
-                      "Temperature automation",
-                      "Humidity control",
-                      "Air quality monitoring",
-                      "Energy optimization"
-                    ].map((feature, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-3 text-gray-700"
-                      >
-                        <Check className="h-5 w-5 text-[#E4A853]" />
-                        {feature}
-                      </motion.li>
-                    ))}
-                  </ul>
-                  <Button
-                    className="bg-[#1A1A1A] hover:bg-[#E4A853] text-white hover:text-black
-                      transition-all duration-300"
-                  >
-                    Learn More
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Security Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="relative bg-[#1A1A1A] py-32"
-          >
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-              <div className="flex flex-col lg:flex-row items-center gap-12">
-                <div className="flex-1">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="relative rounded-2xl overflow-hidden shadow-2xl"
-                  >
-                    <Image
-                      src="/home-improvement/security.jpg"
-                      alt="Smart Security"
-                      width={600}
-                      height={400}
-                      className="object-cover w-full h-[400px]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  </motion.div>
-                </div>
-                <div className="flex-1 text-white">
-                  <h3 className="text-3xl font-bold mb-6">
-                    Advanced
-                    <span className="text-[#E4A853]"> Security</span>
-                  </h3>
-                  <p className="text-gray-400 mb-8 text-lg">
-                    Protect your home with cutting-edge security systems.
-                    Monitor and control access from anywhere in the world.
-                  </p>
-                  <ul className="space-y-4 mb-8">
-                    {[
-                      "24/7 monitoring",
-                      "Smart cameras",
-                      "Biometric access",
-                      "Mobile notifications"
-                    ].map((feature, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-3 text-gray-300"
-                      >
-                        <Check className="h-5 w-5 text-[#E4A853]" />
-                        {feature}
-                      </motion.li>
-                    ))}
-                  </ul>
-                  <Button
-                    className="bg-[#E4A853] hover:bg-white text-black
-                      transition-all duration-300"
-                  >
-                    Learn More
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Entertainment Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-              <div className="flex flex-col lg:flex-row items-center gap-12">
-                <div className="flex-1 lg:order-2">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="relative rounded-2xl overflow-hidden shadow-2xl"
-                  >
-                    <Image
-                      src="/home-improvement/entertainment.jpg"
-                      alt="Home Entertainment"
-                      width={600}
-                      height={400}
-                      className="object-cover w-full h-[400px]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  </motion.div>
-                </div>
-                <div className="flex-1 lg:order-1">
-                  <h3 className="text-3xl font-bold mb-6">
-                    Premium
-                    <span className="text-[#E4A853]"> Entertainment</span>
-                  </h3>
-                  <p className="text-gray-600 mb-8 text-lg">
-                    Transform your home into an entertainment paradise with our
-                    state-of-the-art audio-visual solutions.
-                  </p>
-                  <ul className="space-y-4 mb-8">
-                    {[
-                      "Smart TV integration",
-                      "Multi-room audio",
-                      "Home theater",
-                      "Voice control"
-                    ].map((feature, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-3 text-gray-700"
-                      >
-                        <Check className="h-5 w-5 text-[#E4A853]" />
-                        {feature}
-                      </motion.li>
-                    ))}
-                  </ul>
-                  <Button
-                    className="bg-[#1A1A1A] hover:bg-[#E4A853] text-white hover:text-black
-                      transition-all duration-300"
-                  >
-                    Learn More
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* Testimonials Section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="relative py-32 bg-white"
-      >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
-          >
-            <span className="text-sm font-medium text-[#E4A853] mb-4 block">
-              Testimonials
-            </span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-[#1A1A1A] mb-6">
-              What our clients say
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Testimonial Cards */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="bg-gray-50 rounded-2xl p-8"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden">
-                  <Image
-                    src="/testimonials/client1.jpg"
-                    alt="Client"
-                    width={48}
-                    height={48}
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h4 className="font-bold">Sarah Johnson</h4>
-                  <p className="text-sm text-gray-600">Lagos, Nigeria</p>
-                </div>
-              </div>
-              <p className="text-gray-600">
-                "Betadomot transformed our home into a smart, energy-efficient space.
-                The savings on our electricity bills have been remarkable."
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-6 leading-none">
+                Betadomot
+                <br />
+                <span className="text-[#E4A853]">secures your home.</span>
+              </h2>
+              <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-lg leading-relaxed">
+                Protect your valuable investments with our
+                <span className="text-[#E4A853] font-semibold"> smart security </span>
+                solutions while enjoying
+                <span className="text-black font-semibold"> peace of mind</span>.
               </p>
+              <Link href="/security">
+                <Button
+                  className="group bg-black hover:bg-black/90 text-white px-8 h-14 
+                    text-base transition-all duration-300 rounded-full"
+                >
+                  Learn more
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
             </motion.div>
-
-            {/* Add more testimonial cards */}
           </div>
         </div>
       </motion.div>
 
-      {/* CTA Section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="relative py-32 bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] text-white overflow-hidden"
-      >
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[url('/patterns/circuit.svg')] opacity-5" />
-          <motion.div
-            animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0.2, 0.1, 0.2]
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute top-0 left-0 w-full h-full bg-gradient-radial from-[#E4A853]/10 to-transparent"
-          />
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+      {/* Home Improvement Section */}
+      <motion.div className="relative py-32 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
             {/* Content */}
             <motion.div
-              initial={{ x: -50, opacity: 0 }}
+              initial={{ x: -100, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               viewport={{ once: true }}
-              className="flex-1 text-center lg:text-left"
+              transition={{ duration: 0.8 }}
+              className="flex-1 max-w-2xl"
             >
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-6 leading-none">
+                Betadomot
+                <br />
+                <span className="text-[#E4A853]">improves your home.</span>
+              </h2>
+              <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-lg leading-relaxed">
+                Transform your living space with our
+                <span className="text-[#E4A853] font-semibold"> smart upgrades </span>
+                and experience
+                <span className="text-black font-semibold"> modern comfort</span>.
+              </p>
+              <Link href="/improvements">
+                <Button
+                  className="group bg-black hover:bg-black/90 text-white px-8 h-14 
+                    text-base transition-all duration-300 rounded-full"
+                >
+                  Discover more
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </motion.div>
+
+            {/* Right Image with Float Animation */}
+            <motion.div
+              initial={{ x: 100, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="flex-1 relative w-full aspect-square lg:aspect-auto lg:h-[600px]"
+            >
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -right-4 -bottom-4 w-full h-full border border-[#E4A853]/20 rounded-2xl"
+              />
+              <div className="relative w-full h-full rounded-2xl overflow-hidden">
+                <Image
+                  src="/improvement.jpeg"
+                  alt="Modern Home Improvements"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Vision Section */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="py-32 bg-white"
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center"
+          >
+            <div className="relative aspect-square">
+              <div className="absolute inset-0 bg-[#1A1A1A] rounded-lg overflow-hidden">
+                <motion.div
+                  initial={{ scale: 1.2 }}
+                  whileInView={{ scale: 1 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src="/our-vision.jpeg"
+                    alt="Modern Nigerian Home"
+                    fill
+                    className="object-cover opacity-80"
+                  />
+                </motion.div>
+              </div>
+              <div className="absolute -bottom-8 -right-8 w-48 h-48 bg-[#E4A853]/10 rounded-full blur-2xl" />
+            </div>
+
+            <div className="relative">
               <motion.span
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="inline-block text-sm font-medium text-[#E4A853] mb-4"
+                className="text-sm font-medium text-[#E4A853] mb-6 block"
               >
-                Get Started Today
+                Our Vision
               </motion.span>
+
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-4xl md:text-5xl font-bold mb-6 leading-tight"
+                className="text-4xl sm:text-5xl font-bold text-[#1A1A1A] mb-8 leading-tight"
               >
-                Ready to transform
-                <span className="block text-[#E4A853]">your living space?</span>
+                Your home tells
+                <span className="block">your story</span>
               </motion.h2>
+
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="text-xl text-blue-100/90 mb-8 max-w-xl mx-auto lg:mx-0"
+                className="text-gray-600 text-lg leading-relaxed"
               >
-                Book a consultation with our experts and discover how to make your home smarter, more efficient, and truly exceptional.
+                A home is more than four walls - it's where life unfolds. From morning light
+                streaming through windows to evening conversations over dinner, each moment adds
+                to your story. We're here to make that story more beautiful, more comfortable,
+                and uniquely yours.
               </motion.p>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-              >
-                <Link href="/services/design-consultation">
-                  <Button
-                    className="bg-[#E4A853] text-black hover:bg-[#FFD700] 
-                      px-8 py-6 text-lg font-medium
-                      transform hover:-translate-y-1
-                      transition-all duration-300
-                      shadow-lg hover:shadow-xl"
-                  >
+            </div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      <ProductShowcase />
+
+      {/* Blog Section */}
+      <BlogSection />
+
+      {/* CTA Section */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className={`${spacing.section} bg-white relative overflow-hidden`}
+      >
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[url('/patterns/grid.svg')] opacity-5" />
+          <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-[#E4A853]/5 rounded-full blur-3xl" />
+          <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-[#1A1A1A]/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className={spacing.container}>
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Content */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="text-sm font-medium text-[#E4A853] mb-6 block">
+                Get Started Today
+              </span>
+
+              <h2 className="text-4xl sm:text-5xl font-bold text-[#1A1A1A] mb-8 leading-tight">
+                Ready to transform
+                <span className="block">your living space?</span>
+              </h2>
+
+              <p className="text-gray-600 text-lg mb-8 max-w-xl">
+                Book a consultation with our experts and discover how to make your home
+                smarter, more efficient, and truly exceptional.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/consultation">
+                  <Button className="bg-[#1A1A1A] hover:bg-[#E4A853] text-white hover:text-black 
+                    px-8 py-6 text-lg font-medium transition-all duration-300">
                     Book a Free Consultation
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
                 <Link href="/portfolio">
-                  <Button
-                    variant="outline"
-                    className="border-white/30 text-white hover:bg-white/10
-                      px-8 py-6 text-lg font-medium
-                      transition-all duration-300"
-                  >
+                  <Button variant="outline"
+                    className="border-[#1A1A1A] text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-white
+                    px-8 py-6 text-lg font-medium transition-all duration-300">
                     View Our Portfolio
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-              </motion.div>
+              </div>
             </motion.div>
 
-            {/* Features List */}
+            {/* Features Grid */}
             <motion.div
-              initial={{ x: 50, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="flex-1 grid grid-cols-2 gap-6"
+              className="grid grid-cols-2 gap-6"
             >
               {[
-                { title: "Free Consultation", description: "Expert advice tailored to your needs" },
-                { title: "Quick Installation", description: "Professional setup within days" },
-                { title: "24/7 Support", description: "Round-the-clock technical assistance" },
-                { title: "Flexible Payment", description: "Convenient payment options" }
+                {
+                  title: "Free Consultation",
+                  description: "Expert advice tailored to your needs",
+                  delay: 0.2
+                },
+                {
+                  title: "Quick Installation",
+                  description: "Professional setup within days",
+                  delay: 0.3
+                },
+                {
+                  title: "24/7 Support",
+                  description: "Round-the-clock technical assistance",
+                  delay: 0.4
+                },
+                {
+                  title: "Flexible Payment",
+                  description: "Convenient payment options",
+                  delay: 0.5
+                }
               ].map((feature, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + index * 0.1 }}
-                  className="bg-white/5 backdrop-blur-sm rounded-xl p-6 hover:bg-white/10 
-                    transition-all duration-300 border border-white/10"
+                  transition={{ delay: feature.delay }}
+                  viewport={{ once: true }}
+                  className="bg-white rounded-xl p-6 group
+                    border border-gray-100 hover:border-[#E4A853]
+                    transition-all duration-300 hover:shadow-lg"
                 >
-                  <h3 className="text-lg font-semibold mb-2 text-[#E4A853]">
+                  <h3 className="text-lg font-semibold mb-2 text-[#1A1A1A] group-hover:text-[#E4A853]
+                    transition-colors duration-300">
                     {feature.title}
                   </h3>
-                  <p className="text-white/80 text-sm">
+                  <p className="text-gray-600">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -1217,7 +980,7 @@ export default function HomePage() {
             </motion.div>
           </div>
         </div>
-      </motion.div>
+      </motion.section>
 
       {/* Newsletter Section */}
       <motion.div
