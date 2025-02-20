@@ -11,7 +11,7 @@ const blogPosts = [
         id: 1,
         title: "The Future of Smart Homes in Nigeria",
         excerpt: "Exploring how technology is reshaping Nigerian homes for comfort and efficiency.",
-        image: "/blog/smart-home-future.jpg",
+        image: "/images/blog/smart-home-future.jpg",
         category: "Innovation",
         readTime: "5 min read",
         date: "Mar 15, 2024"
@@ -20,7 +20,7 @@ const blogPosts = [
         id: 2,
         title: "Maximizing Energy Efficiency",
         excerpt: "Practical tips for reducing power consumption while maintaining comfort.",
-        image: "/blog/energy-efficiency.jpg",
+        image: "/images/blog/blog2.jpg",
         category: "Energy",
         readTime: "4 min read",
         date: "Mar 12, 2024"
@@ -29,7 +29,7 @@ const blogPosts = [
         id: 3,
         title: "Design Meets Functionality",
         excerpt: "How modern home solutions are blending aesthetics with practical living.",
-        image: "/blog/design-functionality.jpg",
+        image: "/images/blog/blog1.jpg",
         category: "Design",
         readTime: "3 min read",
         date: "Mar 10, 2024"

@@ -3,6 +3,7 @@ import { Raleway } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { Header } from '@/components/smart-home/header'
 import { Footer } from '@/components/smart-home/footer'
+import { MarketingModal } from '@/components/marketing-modal'
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -26,6 +27,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <MarketingModal />
 
         <Toaster position="top-right" />
       </body>

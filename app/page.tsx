@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button"
 import {
   Zap, Sun, Battery, Thermometer,
   ArrowRight, Calculator, LineChart,
-  Lightbulb, Coins, Shield, Info, Home, Radio, Gift, Mail, Check, Lock
+  Lightbulb, Coins, Shield, Info, Home, Radio, Gift, Mail, Check, Lock, Phone, Clock, CreditCard,
+  HeadphonesIcon
 } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -585,7 +586,7 @@ export default function HomePage() {
                 Live brilliantly.
               </motion.span>
             </motion.div>
-            <div className="text-white/70 text-2xl text-left mt-12 mb-48 order-3 md:hidden">
+            <div className="text-white/70 text-2xl text-left mt-12 mb-4 order-3 md:hidden">
               Modern living redefined.
               <br className="block" />
               Smart homes crafted for the Nigerian elite.
@@ -865,10 +866,8 @@ export default function HomePage() {
                 transition={{ delay: 0.4 }}
                 className="text-gray-600 text-lg leading-relaxed"
               >
-                A home is more than four walls - it's where life unfolds. From morning light
-                streaming through windows to evening conversations over dinner, each moment adds
-                to your story. We're here to make that story more beautiful, more comfortable,
-                and uniquely yours.
+                Beyond four walls, your home is where life's stories begin. We're here to make those stories extraordinary.
+
               </motion.p>
             </div>
           </motion.div>
@@ -885,16 +884,37 @@ export default function HomePage() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className={`${spacing.section} bg-white relative overflow-hidden`}
+        className="relative py-32 bg-gradient-to-br from-[#003366] to-[#002244] overflow-hidden"
       >
-        {/* Subtle Background Pattern */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[url('/patterns/grid.svg')] opacity-5" />
-          <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-[#E4A853]/5 rounded-full blur-3xl" />
-          <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-[#1A1A1A]/5 rounded-full blur-3xl" />
+        {/* Enhanced Background Effects - Removed grid pattern */}
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.2, 0.1, 0.2]
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-radial from-[#E4A853]/10 to-transparent"
+          />
+          <motion.div
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.1, 0.2, 0.1]
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-radial from-[#003366]/10 to-transparent"
+          />
         </div>
 
-        <div className={spacing.container}>
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Content */}
             <motion.div
@@ -902,34 +922,40 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <span className="text-sm font-medium text-[#E4A853] mb-6 block">
+              <span className="inline-block text-sm font-medium bg-gradient-to-r from-[#E4A853] to-[#FFD700] 
+                text-transparent bg-clip-text mb-6 tracking-wider uppercase">
                 Get Started Today
               </span>
 
-              <h2 className="text-4xl sm:text-5xl font-bold text-[#1A1A1A] mb-8 leading-tight">
+              <h2 className="text-4xl sm:text-5xl font-bold text-white mb-8 leading-tight">
                 Ready to transform
-                <span className="block">your living space?</span>
+                <span className="block text-[#E4A853] mt-2">your living space?</span>
               </h2>
 
-              <p className="text-gray-600 text-lg mb-8 max-w-xl">
+              <p className="text-gray-300 text-lg mb-10 leading-relaxed">
                 Book a consultation with our experts and discover how to make your home
                 smarter, more efficient, and truly exceptional.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/consultation">
-                  <Button className="bg-[#1A1A1A] hover:bg-[#E4A853] text-white hover:text-black 
-                    px-8 py-6 text-lg font-medium transition-all duration-300">
+                  <Button className="h-14 px-8 bg-[#E4A853] hover:bg-[#FFD700] 
+                    text-black font-medium transition-all duration-300
+                    rounded-full flex items-center justify-center gap-2
+                    hover:gap-3 shadow-lg hover:shadow-xl 
+                    transform hover:-translate-y-0.5">
                     Book a Free Consultation
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="h-5 w-5 transition-all duration-300" />
                   </Button>
                 </Link>
                 <Link href="/portfolio">
                   <Button variant="outline"
-                    className="border-[#1A1A1A] text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-white
-                    px-8 py-6 text-lg font-medium transition-all duration-300">
+                    className="h-14 px-8 border-white/20 text-[#E4A853] 
+                      hover:bg-white/10 backdrop-blur-sm
+                      rounded-full flex items-center justify-center gap-2
+                      hover:gap-3 transition-all duration-300">
                     View Our Portfolio
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="h-5 w-5 transition-all duration-300" />
                   </Button>
                 </Link>
               </div>
@@ -946,21 +972,25 @@ export default function HomePage() {
                 {
                   title: "Free Consultation",
                   description: "Expert advice tailored to your needs",
+                  icon: Phone,
                   delay: 0.2
                 },
                 {
                   title: "Quick Installation",
                   description: "Professional setup within days",
+                  icon: Clock,
                   delay: 0.3
                 },
                 {
                   title: "24/7 Support",
-                  description: "Round-the-clock technical assistance",
+                  description: "Round-the-clock assistance",
+                  icon: HeadphonesIcon,
                   delay: 0.4
                 },
                 {
                   title: "Flexible Payment",
                   description: "Convenient payment options",
+                  icon: CreditCard,
                   delay: 0.5
                 }
               ].map((feature, index) => (
@@ -970,15 +1000,21 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: feature.delay }}
                   viewport={{ once: true }}
-                  className="bg-white rounded-xl p-6 group
-                    border border-gray-100 hover:border-[#E4A853]
+                  className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 group
+                    border border-white/10 hover:border-[#E4A853]/30
                     transition-all duration-300 hover:shadow-lg"
                 >
-                  <h3 className="text-lg font-semibold mb-2 text-[#1A1A1A] group-hover:text-[#E4A853]
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#E4A853]/20 to-[#E4A853]/5 
+                    rounded-xl flex items-center justify-center mb-4 
+                    group-hover:from-[#E4A853]/30 group-hover:to-[#E4A853]/10 
+                    transition-all duration-300">
+                    <feature.icon className="h-6 w-6 text-[#E4A853]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 text-white group-hover:text-[#E4A853]
                     transition-colors duration-300">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-400">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -995,9 +1031,8 @@ export default function HomePage() {
         viewport={{ once: true }}
         className="relative py-32 bg-gradient-to-br from-[#003366] to-[#002244]"
       >
-        {/* Background Effects */}
+        {/* Enhanced Background Effects - Removed grid pattern */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/patterns/grid.svg')] opacity-5" />
           <motion.div
             animate={{
               scale: [1, 1.2, 1],
@@ -1037,14 +1072,14 @@ export default function HomePage() {
               transition={{ delay: 0.2 }}
             >
               <span className="inline-block text-sm font-medium bg-gradient-to-r from-[#E4A853] to-[#FFD700] 
-                text-transparent bg-clip-text mb-4">
+                text-transparent bg-clip-text mb-4 tracking-wider uppercase">
                 Join Our Community
               </span>
               <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight">
                 Stay ahead with smart living
-                <span className="block text-[#E4A853]">updates & insights</span>
+                <span className="block text-[#E4A853] mt-2">updates & insights</span>
               </h2>
-              <p className="text-lg text-gray-400 mb-10">
+              <p className="text-lg text-gray-300 mb-10 leading-relaxed">
                 Get expert tips, exclusive offers, and the latest innovations in smart home technology
                 delivered straight to your inbox.
               </p>
@@ -1057,31 +1092,38 @@ export default function HomePage() {
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <div className="relative flex-1">
+              <div className="relative flex-1 group">
                 <Input
                   type="email"
                   placeholder="Enter your email"
                   className="h-14 bg-white/10 border-white/20 text-white placeholder:text-gray-400
-                    focus:bg-white/15 transition-all duration-300 pr-12"
+                    focus:bg-white/15 transition-all duration-300 pr-12 pl-5
+                    rounded-full backdrop-blur-sm
+                    group-hover:border-[#E4A853]/50 focus:border-[#E4A853]
+                    focus:ring focus:ring-[#E4A853]/20"
                 />
-                <Mail className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Mail className="absolute right-5 top-1/2 transform -translate-y-1/2 h-5 w-5 
+                  text-gray-400 group-hover:text-[#E4A853] transition-colors duration-300" />
               </div>
               <Button
                 className="h-14 px-8 bg-[#E4A853] hover:bg-[#FFD700]
                   text-black font-medium transition-all duration-300 
-                  shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  shadow-lg hover:shadow-xl transform hover:-translate-y-0.5
+                  rounded-full flex items-center justify-center gap-2
+                  hover:gap-3"
               >
                 Subscribe
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="h-5 w-5 transition-all duration-300" />
               </Button>
             </motion.form>
 
             <motion.p
-              className="text-sm text-gray-500 mt-4"
+              className="text-sm text-gray-400 mt-6 flex items-center justify-center gap-2"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
             >
+              <Lock className="h-4 w-4" />
               By subscribing, you agree to our Privacy Policy and consent to receive updates.
             </motion.p>
           </motion.div>
@@ -1117,13 +1159,14 @@ export default function HomePage() {
                 whileHover={{ y: -5, scale: 1.02 }}
                 className="text-center group"
               >
-                <div className="w-12 h-12 bg-gradient-to-br from-[#E4A853]/20 to-[#E4A853]/5 
-                  rounded-xl flex items-center justify-center mx-auto mb-4 
-                  group-hover:from-[#E4A853]/30 group-hover:to-[#E4A853]/10 transition-all duration-300"
+                <div className="w-14 h-14 bg-gradient-to-br from-[#E4A853]/20 to-[#E4A853]/5 
+                  rounded-2xl flex items-center justify-center mx-auto mb-4 
+                  group-hover:from-[#E4A853]/30 group-hover:to-[#E4A853]/10 
+                  transition-all duration-300 backdrop-blur-sm"
                 >
-                  <item.icon className="h-6 w-6 text-[#E4A853]" />
+                  <item.icon className="h-7 w-7 text-[#E4A853]" />
                 </div>
-                <p className="text-white font-medium">{item.text}</p>
+                <p className="text-white font-medium text-lg">{item.text}</p>
               </motion.div>
             ))}
           </motion.div>

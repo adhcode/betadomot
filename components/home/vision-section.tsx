@@ -51,10 +51,7 @@ export function VisionSection() {
                             </h2>
 
                             <p className="text-gray-600 text-lg leading-relaxed">
-                                A home is more than four walls - it's where life unfolds. From morning light
-                                streaming through windows to evening conversations over dinner, each moment adds
-                                to your story. We're here to make that story more beautiful, more comfortable,
-                                and uniquely yours.
+                                Beyond four walls, your home is where life's stories begin. We're here to make those stories extraordinary.
                             </p>
                         </motion.div>
                     </div>

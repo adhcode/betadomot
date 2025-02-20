@@ -92,8 +92,7 @@ export function ProductShowcase() {
                         <span className="text-[#E4A853]">your dream home.</span>
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        From essential appliances to luxurious decor, discover our curated collection
-                        of premium products for every corner of your home.
+                        Curated excellence for the sophisticated home, from essentials to elegance.
                     </p>
                 </motion.div>
 
