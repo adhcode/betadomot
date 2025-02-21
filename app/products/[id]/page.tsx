@@ -154,12 +154,13 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                             {relatedProducts.map((product) => (
                                 <ProductSuggestion
                                     key={product.id}
-                                    title={product.name}
-                                    description={product.description}
-                                    price={product.price}
-                                    savings={product.savings}
-                                    image={product.image}
-                                    href={`/products/${product.id}`}
+                                    product={{
+                                        id: product.id,
+                                        name: product.name,
+                                        description: product.description,
+                                        price: product.price,
+                                        savings: product.savings
+                                    }}
                                 />
                             ))}
                         </div>

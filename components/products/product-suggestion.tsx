@@ -2,55 +2,41 @@
 
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Clock, Check } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Product } from '@/data/products'
+import { cn } from '@/lib/utils'
 
 interface ProductSuggestionProps {
-    title: string
-    description: string
-    price: number
-    savings?: string
-    image: string
-    href: string
+    product: {
+        id: string;
+        name: string;
+        price: number;
+        description: string;
+        savings?: string;
+        features?: string[];
+    };
+    className?: string;
 }
 
-export function ProductSuggestion({
-    title,
-    description,
-    price,
-    savings,
-    image,
-    href
-}: ProductSuggestionProps) {
+export function ProductSuggestion({ product, className }: ProductSuggestionProps) {
     return (
-        <Card className="group overflow-hidden">
-            <div className="flex items-center p-4">
-                <div className="relative w-24 h-24 mr-4">
-                    <Image
-                        src={image}
-                        alt={title}
-                        fill
-                        className="object-cover rounded-lg"
-                    />
-                </div>
-                <div className="flex-1">
-                    <h4 className="font-medium mb-1">{title}</h4>
-                    <p className="text-sm text-gray-600 mb-2">{description}</p>
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-lg font-bold">₦{price.toLocaleString()}</p>
-                            <p className="text-sm text-green-600">{savings}</p>
-                        </div>
-                        <Link href={href}>
-                            <Button variant="ghost" size="sm">
-                                Learn More
-                                <ArrowRight className="ml-2 h-4 w-4" />
-                            </Button>
-                        </Link>
+        <Card className={cn("group hover:shadow-lg transition-all duration-300", className)}>
+            <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+                <p className="text-gray-600 mb-4">{product.description}</p>
+                <div className="flex items-center justify-between">
+                    <div className="text-[#003366] font-bold">
+                        ₦{product.price.toLocaleString()}
                     </div>
+                    {product.savings && (
+                        <div className="text-[#E4A853] text-sm">
+                            Save {product.savings}
+                        </div>
+                    )}
                 </div>
             </div>
         </Card>
-    )
+    );
 } 

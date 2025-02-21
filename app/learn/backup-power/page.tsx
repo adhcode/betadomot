@@ -567,12 +567,7 @@ export default function BackupPowerPage() {
                                                             {rec.products.map((product) => (
                                                                 <ProductSuggestion
                                                                     key={product.id}
-                                                                    title={product.name}
-                                                                    description={product.description}
-                                                                    price={product.price}
-                                                                    savings={product.savings}
-                                                                    image={`/products/${product.id}.jpg`}
-                                                                    href={`/products/${product.id}`}
+                                                                    product={product}
                                                                 />
                                                             ))}
                                                         </div>
@@ -632,12 +627,7 @@ export default function BackupPowerPage() {
                                             {useCase.products.map((product) => (
                                                 <div key={product.id} className="space-y-6">
                                                     <ProductSuggestion
-                                                        title={product.name}
-                                                        description={product.description}
-                                                        price={product.price}
-                                                        savings={product.savings}
-                                                        image={`/products/${product.id}.jpg`}
-                                                        href={`/products/${product.id}`}
+                                                        product={product}
                                                     />
 
                                                     <Card className="p-4 bg-gray-50">

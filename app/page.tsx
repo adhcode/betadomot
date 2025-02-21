@@ -770,7 +770,7 @@ export default function HomePage() {
                 and experience
                 <span className="text-black font-semibold"> modern comfort</span>.
               </p>
-              <Link href="/improvements">
+              <Link href="/home-improvement">
                 <Button
                   className="group bg-black hover:bg-black/90 text-white px-8 h-14 
                     text-base transition-all duration-300 rounded-full"

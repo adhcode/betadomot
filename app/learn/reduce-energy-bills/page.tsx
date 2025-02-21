@@ -338,12 +338,13 @@ export default function ReduceEnergyBillsPage() {
                                 {category.products.map((product) => (
                                     <ProductSuggestion
                                         key={product.id}
-                                        title={product.name}
-                                        description={product.description}
-                                        price={product.price}
-                                        savings={product.savings}
-                                        image={`/products/${product.id}.jpg`}
-                                        href={`/products/${product.id}`}
+                                        product={{
+                                            id: product.id,
+                                            name: product.name,
+                                            description: product.description,
+                                            price: product.price,
+                                            savings: product.savings
+                                        }}
                                     />
                                 ))}
                             </div>
