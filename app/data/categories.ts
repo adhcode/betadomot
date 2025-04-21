@@ -6,6 +6,7 @@ export interface Category {
   products: string[];
   subcategories: string[];
   features: { title: string; description: string }[];
+  priceRange: { min: number; max: number };
 }
 
 export interface MainCategory {
@@ -26,7 +27,8 @@ export const categories: Category[] = [
     image: '/categories/afrocentric.jpg',
     products: [],
     subcategories: [],
-    features: []
+    features: [],
+    priceRange: { min: 0, max: 0 }
   },
   {
     id: 'smart-furniture',
@@ -35,7 +37,8 @@ export const categories: Category[] = [
     image: '/categories/smart-furniture.jpg',
     products: [],
     subcategories: [],
-    features: []
+    features: [],
+    priceRange: { min: 0, max: 0 }
   },
   {
     id: 'smart-home',
@@ -44,7 +47,8 @@ export const categories: Category[] = [
     image: '/categories/smart-home.jpg',
     products: [],
     subcategories: [],
-    features: []
+    features: [],
+    priceRange: { min: 0, max: 0 }
   },
   {
     id: 'appliances',
@@ -53,7 +57,8 @@ export const categories: Category[] = [
     image: '/categories/appliances.jpg',
     products: [],
     subcategories: [],
-    features: []
+    features: [],
+    priceRange: { min: 0, max: 0 }
   },
   {
     id: 'bedding-bath',
@@ -62,7 +67,8 @@ export const categories: Category[] = [
     image: '/categories/bedding.jpg',
     products: [],
     subcategories: [],
-    features: []
+    features: [],
+    priceRange: { min: 0, max: 0 }
   },
   {
     id: 'home-decor',
@@ -71,7 +77,8 @@ export const categories: Category[] = [
     image: '/categories/decor.jpg',
     products: [],
     subcategories: [],
-    features: []
+    features: [],
+    priceRange: { min: 0, max: 0 }
   },
   {
     id: 'lighting',
@@ -80,7 +87,8 @@ export const categories: Category[] = [
     image: '/categories/lighting.jpg',
     products: [],
     subcategories: [],
-    features: []
+    features: [],
+    priceRange: { min: 0, max: 0 }
   },
   {
     id: 'rugs',
@@ -89,7 +97,8 @@ export const categories: Category[] = [
     image: '/categories/rugs.jpg',
     products: [],
     subcategories: [],
-    features: []
+    features: [],
+    priceRange: { min: 0, max: 0 }
   },
   {
     id: 'organization',
@@ -98,7 +107,8 @@ export const categories: Category[] = [
     image: '/categories/organization.jpg',
     products: [],
     subcategories: [],
-    features: []
+    features: [],
+    priceRange: { min: 0, max: 0 }
   },
   {
     id: 'kitchen',
@@ -107,7 +117,8 @@ export const categories: Category[] = [
     image: '/categories/kitchen.jpg',
     products: [],
     subcategories: [],
-    features: []
+    features: [],
+    priceRange: { min: 0, max: 0 }
   }
 ]
 

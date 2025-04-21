@@ -1,7 +1,7 @@
 'use client'
 
-import { PageHeader } from '@/components/ui/page-header'
-import { EnergyAssessment } from '@/components/learn/energy-assessment'
+import { PageHeader } from '../../components/ui/page-header'
+import { EnergyAssessment } from '../../components/services/energy-assessment'
 
 export default function EnergyAssessmentPage() {
     return (

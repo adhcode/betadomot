@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Slider } from "@/components/ui/slider"
+import { Card } from "../../components/ui/card"
+import { Input } from "../../components/ui/input"
+import { Button } from "../../components/ui/button"
+import { Slider } from "../../components/ui/slider"
 import { Sun, Battery, Zap } from 'lucide-react'
 
 interface CalculationResult {

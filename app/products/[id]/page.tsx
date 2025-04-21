@@ -1,18 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getProductById, getRelatedProducts } from '@/data/products'
-import { Product } from '@/types/product'
-import { PageHeader } from '@/components/ui/page-header'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { getProductById, getRelatedProducts } from '../../../data/products'
+import type { Product } from '../../../types/product'
+import { PageHeader, Button, Card } from '../../components/ui'
 import {
     ShoppingCart, Star, Check,
     Battery, Zap, Shield
 } from 'lucide-react'
 import Image from 'next/image'
-import { ProductSuggestion } from '@/components/products/product-suggestion'
-import { useCart } from '@/hooks/use-cart'
+import { ProductSuggestion } from '../../components/products/product-suggestion'
+import { useCart } from '../../../hooks/use-cart'
 import { use } from 'react'
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -25,7 +23,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         const fetchedProduct = getProductById(id)
         if (fetchedProduct) {
             setProduct(fetchedProduct)
-            setRelatedProducts(getRelatedProducts(fetchedProduct.id))
+            setRelatedProducts(getRelatedProducts(fetchedProduct))
         }
     }, [id])
 
@@ -43,14 +41,14 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                     {/* Product Image */}
                     <div className="relative aspect-square rounded-xl overflow-hidden">
                         <Image
-                            src={product.image}
+                            src={product.image || product.images?.[0] || '/images/placeholder.jpg'}
                             alt={product.name}
                             fill
                             className="object-cover"
                         />
-                        {product.savings && (
+                        {product.isOnSale && product.discount && (
                             <div className="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full">
-                                Save {product.savings}
+                                Save {product.discount}%
                             </div>
                         )}
                     </div>
@@ -72,8 +70,8 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                             <p className="text-xl text-gray-600 mb-6">{product.description}</p>
                             <div className="flex items-baseline gap-4">
                                 <p className="text-3xl font-bold">₦{product.price.toLocaleString()}</p>
-                                {product.savings && (
-                                    <p className="text-green-600">Save {product.savings}</p>
+                                {product.isOnSale && product.originalPrice && (
+                                    <p className="text-green-600">Save {Math.round((1 - product.price / product.originalPrice) * 100)}%</p>
                                 )}
                             </div>
                         </div>
@@ -94,7 +92,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                         <div className="space-y-4">
                             <h3 className="font-semibold text-lg">Key Features</h3>
                             <ul className="grid grid-cols-2 gap-2">
-                                {product.features.map((feature: string, index: number) => (
+                                {product.features?.map((feature: string, index: number) => (
                                     <li key={index} className="flex items-center gap-2">
                                         <Check className="h-5 w-5 text-green-500" />
                                         <span className="text-gray-600">{feature}</span>
@@ -155,13 +153,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                             {relatedProducts.map((product) => (
                                 <ProductSuggestion
                                     key={product.id}
-                                    product={{
-                                        id: product.id,
-                                        name: product.name,
-                                        description: product.description,
-                                        price: product.price,
-                                        savings: product.savings
-                                    }}
+                                    product={product}
                                 />
                             ))}
                         </div>

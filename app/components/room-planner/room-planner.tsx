@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Card } from "../../components/ui/card"
+import { Button } from "../../components/ui/button"
+import { Input } from "../../components/ui/input"
 import {
     Ruler, Move, Grid, Save,
     RotateCcw, ZoomIn, ZoomOut,
@@ -68,13 +68,13 @@ export function RoomPlanner() {
                     <Card className="col-span-2 aspect-[4/3] relative">
                         {/* Add room visualization here */}
                         <div className="absolute bottom-4 right-4 flex gap-2">
-                            <Button size="icon" variant="outline">
+                            <Button size="sm" variant="outline">
                                 <ZoomIn className="h-4 w-4" />
                             </Button>
-                            <Button size="icon" variant="outline">
+                            <Button size="sm" variant="outline">
                                 <ZoomOut className="h-4 w-4" />
                             </Button>
-                            <Button size="icon" variant="outline">
+                            <Button size="sm" variant="outline">
                                 <RotateCcw className="h-4 w-4" />
                             </Button>
                         </div>

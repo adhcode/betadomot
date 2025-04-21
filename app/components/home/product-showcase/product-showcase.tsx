@@ -2,10 +2,11 @@
 
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
+import { Button } from "../../../components/ui/button"
 import Link from "next/link"
-import { categories, type Category } from "@/data/categories"
-import { getProductsByCategory, type Product } from "@/data/products"
+import { categories, type Category } from "../../../data/categories"
+import { getProductsByCategory } from "../../../data/products"
+import type { Product } from "../../../../types/product"
 
 interface CategoryWithId extends Category {
     id: string;

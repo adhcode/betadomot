@@ -1,8 +1,8 @@
 'use client'
 
 import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card } from "../components/ui/card"
+import { Button } from "../components/ui/button"
 import {
     Shield, Lock, Bell, Camera,
     ArrowRight, Zap, Home, Wifi,
@@ -13,13 +13,12 @@ import {
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from './security.module.css'
-import { ProductSuggestion } from '@/components/products/product-suggestion'
-import { getProductsByCategory } from '@/data/products'
-import { Product } from '@/types/product'
-import { cn } from "@/lib/utils"
+import { ProductSuggestion } from '../components/products/product-suggestion'
+import { getProductsByCategory } from '../../data/products'
+import { cn } from "../../lib/utils"
 import { Check, Clock } from 'lucide-react'
 import { toast } from 'sonner'
-import { Input } from "@/components/ui/input"
+import { Input } from "../components/ui/input"
 
 // Security tips
 const securityTips = [
@@ -334,7 +333,6 @@ export default function SecurityPage() {
                                         <ProductSuggestion
                                             key={product.id}
                                             product={product}
-                                            className="bg-gradient-to-br from-white to-gray-50/50"
                                         />
                                     ))}
                                 </div>

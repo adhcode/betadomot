@@ -1,9 +1,10 @@
 'use client'
 
-import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent } from "../../components/ui/dialog"
+import { Button } from "../../components/ui/button"
 import { X, Heart, ShoppingCart, Star } from "lucide-react"
 import Image from "next/image"
+import { type Product } from '../../../types/product'
 
 interface DealProduct {
     id: string
@@ -96,7 +97,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                                 <ShoppingCart className="h-4 w-4 mr-2" />
                                 Add to Cart
                             </Button>
-                            <Button variant="outline" size="icon">
+                            <Button variant="outline" size="sm">
                                 <Heart className="h-4 w-4" />
                             </Button>
                         </div>

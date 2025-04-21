@@ -3,8 +3,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { type Collection } from '@/data/collections'
-import { type Product } from '@/types/product'
+import { type Collection } from '../../data/collections'
+import { type Product } from '../../../types/product'
 
 interface CollectionCardProps {
     collection: Collection

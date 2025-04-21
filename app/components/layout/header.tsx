@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { Button } from "@/components/ui/button"
+import { Button } from "../../components/ui/button"
 import { Menu, ShoppingCart, Search, User2, X } from 'lucide-react'
 import { useState } from 'react'
-import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+import { Input } from "../../components/ui/input"
+import { cn } from "../../lib/utils"
 
 const navLinks = [
     { href: '/products', label: 'products' },
@@ -36,7 +36,7 @@ export function Header() {
                         {/* Mobile Menu Button */}
                         <Button
                             variant="ghost"
-                            size="icon"
+                            size="sm"
                             className="lg:hidden h-8 w-8"
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         >
@@ -79,10 +79,10 @@ export function Header() {
 
                         {/* Right Section - Icons */}
                         <div className="flex items-center gap-2 ml-auto lg:ml-6">
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <Button variant="ghost" size="sm" className="h-8 w-8">
                                 <User2 className="h-5 w-5" />
                             </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <Button variant="ghost" size="sm" className="h-8 w-8">
                                 <ShoppingCart className="h-5 w-5" />
                             </Button>
                         </div>

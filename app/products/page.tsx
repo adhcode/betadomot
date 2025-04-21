@@ -2,8 +2,8 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from "../components/ui/button"
+import { Input } from "../components/ui/input"
 import {
     Search, ArrowRight, Star, Timer, Truck, Shield,
     Zap, Home, Sofa, Lamp, Tv, Coffee, Bath, Wrench,
@@ -11,18 +11,18 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { products as baseProducts, getProductById } from '@/data/products'
-import { QuickViewModal } from "@/components/products/quick-view-modal"
-import { type Product } from '@/types/product'
-import { cn } from "@/lib/utils"
-import { categories } from "@/data/categories"
-import { collections } from '@/data/collections'
-import { ProductCard } from '@/components/products/product-card'
-import { DealCard } from '@/components/products/deal-card'
-import { CollectionCard } from '@/components/products/collection-card'
-import { deals } from '@/data/deals'
-import { type Collection } from '@/data/collections'
-import { ProductGrid } from '@/components/products/product-grid'
+import { products as baseProducts, getProductById } from '../../data/products'
+import { QuickViewModal } from "../components/products/quick-view-modal"
+import { type Product } from '../../types/product'
+import { cn } from "../../lib/utils"
+import { categories } from '../data/categories'
+import { collections } from '../data/collections'
+import { ProductCard } from '../components/products/product-card'
+import { DealCard } from '../components/products/deal-card'
+import { CollectionCard } from '../components/products/collection-card'
+import { deals } from '../data/deals'
+import { type Collection } from '../data/collections'
+import { ProductGrid } from '../components/products/product-grid'
 
 // Add createdAt to products to match the Product type
 const products: Product[] = baseProducts.map(product => ({

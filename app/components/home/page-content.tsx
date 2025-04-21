@@ -11,7 +11,7 @@ import { HomeImprovementSection } from "../../components/home/home-improvement/h
 import { BlogSection } from "../../components/blog/blog-section"
 import { NewsletterSection } from "../../components/home/newsletter/newsletter-section"
 import { ProductShowcase } from "../../components/home/product-showcase/product-showcase"
-import type { Product } from '@/types/product'
+import type { Product } from '../../../types/product'
 
 export function PageContent({ products }: { products: Product[] }) {
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null)

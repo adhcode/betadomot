@@ -1,9 +1,9 @@
 import "./globals.css"
 import { Raleway } from 'next/font/google'
 import { Toaster } from 'sonner'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
-import { MarketingModal } from '@/components/marketing/marketing-modal'
+import { Header } from './components/layout/header'
+import { Footer } from './components/layout/footer'
+import { MarketingModal } from './components/marketing/marketing-modal'
 
 const raleway = Raleway({
   subsets: ['latin'],

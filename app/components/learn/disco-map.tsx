@@ -1,15 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card } from "../../components/ui/card"
+import { Button } from "../../components/ui/button"
 import { Info, Phone, Globe, MapPin, ChevronRight } from 'lucide-react'
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "../../components/ui/tooltip"
 
 const discoData = [
     {

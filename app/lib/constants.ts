@@ -1,5 +1,7 @@
-// Spacing configuration
-export const spacing = {
+import { colors, spacing } from "../../lib/styles"
+
+// Layout spacing configuration
+export const layoutSpacing = {
     container: {
         padding: {
             default: "px-4 md:px-6 lg:px-8",
@@ -65,4 +67,9 @@ export const theme = {
         "2xl": "1.5rem",
         full: "9999px"
     }
+}
+
+export const sectionHeader = (title: string, subtitle: string, color: "light" | "dark" = "dark") => {
+  const textColor = color === "light" ? "text-white" : `text-[${colors.dark}]`
+  // ... existing code ...
 } 

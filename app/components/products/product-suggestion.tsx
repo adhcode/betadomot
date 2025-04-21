@@ -2,11 +2,13 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "../../components/ui/card"
+import { Button } from "../../components/ui/button"
 import { ShoppingCart } from "lucide-react"
-import { useCart } from "@/hooks/use-cart"
-import type { Product } from "@/data/products"
+import { useCart } from "../../../hooks/use-cart"
+import type { Product } from "../../../types/product"
+import { motion } from "framer-motion"
+import { ArrowRight } from "lucide-react"
 
 interface ProductSuggestionProps {
     product: Product
@@ -19,7 +21,7 @@ export function ProductSuggestion({ product }: ProductSuggestionProps) {
         <Card className="group overflow-hidden transition-all hover:shadow-lg">
             <div className="relative aspect-square overflow-hidden">
                 <Image
-                    src={product.image}
+                    src={product.images[0] || '/images/placeholder.jpg'}
                     alt={product.name}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"

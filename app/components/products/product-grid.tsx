@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import { motion } from "framer-motion"
 import { ProductCard } from './product-card'
-import { type Product } from '@/types/product'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { type Product } from '../../../types/product'
+import { Button } from "../../components/ui/button"
+import { Input } from "../../components/ui/input"
 import { Search, SlidersHorizontal } from 'lucide-react'
 
 interface ProductGridProps {

@@ -1,5 +1,12 @@
 import React from 'react'
-import { colors, spacing } from "@/lib/styles"
+import { colors, spacing } from "../styles"
+
+export const SectionHeader = ({ title, subtitle }: { title: string; subtitle: string }) => (
+    <div className={spacing.sectionHead}>
+        <h2 className="text-3xl font-bold mb-4">{title}</h2>
+        <p className="text-lg text-gray-600">{subtitle}</p>
+    </div>
+)
 
 export const sectionHeader = (title: string, subtitle: string, color: "light" | "dark" = "dark") => {
     return (

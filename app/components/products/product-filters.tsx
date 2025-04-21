@@ -1,34 +1,37 @@
 "use client"
 
-import { Category } from "@/data/categories"
-import { Button } from "@/components/ui/button"
+import { Category } from "../../data/categories"
+import { Button } from "../ui/button"
+import { Slider } from "../ui/slider"
 
 interface ProductFiltersProps {
-    categories: Category[]
-    selectedCategory?: string
-    onSelectCategory: (category: string) => void
+    category: Category
+    onFilterChange: (filters: {
+        priceRange: { min: number; max: number }
+        brands: string[]
+        features: string[]
+        subcategories: string[]
+    }) => void
 }
 
-export function ProductFilters({ categories, selectedCategory, onSelectCategory }: ProductFiltersProps) {
+export function ProductFilters({ category, onFilterChange }: ProductFiltersProps) {
     return (
-        <div className="flex flex-wrap gap-2">
-            <Button
-                variant={!selectedCategory ? "default" : "outline"}
-                onClick={() => onSelectCategory("")}
-                className="text-sm"
-            >
-                All Products
-            </Button>
-            {categories.map((category) => (
-                <Button
-                    key={category.id}
-                    variant={selectedCategory === category.id ? "default" : "outline"}
-                    onClick={() => onSelectCategory(category.id)}
-                    className="text-sm"
-                >
-                    {category.title}
-                </Button>
-            ))}
+        <div className="space-y-6">
+            <div>
+                <h3 className="font-medium mb-2">Price Range</h3>
+                <Slider
+                    value={[category.priceRange.min, category.priceRange.max]}
+                    min={category.priceRange.min}
+                    max={category.priceRange.max}
+                    step={1000}
+                    onValueChange={([min, max]) => onFilterChange({
+                        priceRange: { min, max },
+                        brands: [],
+                        features: [],
+                        subcategories: []
+                    })}
+                />
+            </div>
         </div>
     )
 } 

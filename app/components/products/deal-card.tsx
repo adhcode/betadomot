@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Timer } from 'lucide-react'
-import { type Deal } from '@/data/deals'
+import { type Deal } from '../../data/deals'
 
 interface DealCardProps extends Deal { }
 

@@ -1,8 +1,9 @@
 import { motion } from "framer-motion"
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { Button } from '../../../components/ui/button'
 import { ShoppingBag, Star, ArrowRight } from 'lucide-react'
+import { fadeIn, slideIn } from "../../../../lib/animations"
 
 export const HeroSection = () => {
     return (
@@ -36,33 +37,33 @@ export const HeroSection = () => {
             <div className="relative z-10 h-full w-full">
                 <div className="container-max mx-auto pt-28 lg:pt-36 px-8 lg:px-12">
                     <motion.div
-                        initial={{ y: 100, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.5 }}
+                        variants={fadeIn}
+                        initial="hidden"
+                        animate="show"
                         className="max-w-2xl"
                     >
                         <motion.h1
+                            variants={fadeIn}
+                            initial="hidden"
+                            animate="show"
                             className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.8 }}
                         >
                             Discover Your
                         </motion.h1>
                         <motion.h1
+                            variants={fadeIn}
+                            initial="hidden"
+                            animate="show"
                             className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#E4A853] mb-6 leading-tight"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 1 }}
                         >
                             Dream Home
                         </motion.h1>
 
                         <motion.p
+                            variants={fadeIn}
+                            initial="hidden"
+                            animate="show"
                             className="text-lg text-white/90 mb-8"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 1.2 }}
                         >
                             Transform your space with our curated collection of premium furniture, decor, and smart home solutions. Quality craftsmanship, timeless design, delivered to your doorstep.
                         </motion.p>

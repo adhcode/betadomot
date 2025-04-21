@@ -2,21 +2,27 @@
 
 import { motion } from "framer-motion"
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from "../../components/ui/button"
+import { Input } from "../../components/ui/input"
 import { Search, ArrowRight, Filter, Star } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { ProductFilters } from "@/components/products/product-filters"
-import { categories } from "@/data/categories"
-import { getProductsByCategory } from "@/data/products"
-import { ProductCard } from "@/components/products/product-card"
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
+import { ProductFilters } from "../../components/products/product-filters"
+import { categories } from "../../data/categories"
+import { getProductsByCategory } from "../../data/products"
+import { ProductCard } from "../../components/products/product-card"
+import { LoadingSpinner } from "../../components/ui/loading-spinner"
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
+interface PageProps {
+    params: {
+        slug: string
+    }
+}
+
+export default function CategoryPage({ params }: PageProps) {
     const [sortBy, setSortBy] = useState("featured")
     const [loading, setLoading] = useState(false)
-    const category = categories[params.slug]
+    const category = categories.find(cat => cat.id === params.slug)
 
     if (!category) {
         return (

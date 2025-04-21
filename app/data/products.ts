@@ -1,14 +1,5 @@
-import type { Category } from "@/data/categories";
-
-export interface Product {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  images: string[];
-  description: string;
-  features?: string[];
-}
+import type { Product } from "@/types/product";
+import type { Category } from "./categories";
 
 export const products: Product[] = [
   {
@@ -18,7 +9,8 @@ export const products: Product[] = [
     price: 299999,
     images: ["/products/smart-sofa.jpg"],
     description: "Intelligent sofa with built-in charging, massage, and climate control",
-    features: ["USB Charging", "Climate Control", "Massage Function", "Voice Control"]
+    features: ["USB Charging", "Climate Control", "Massage Function", "Voice Control"],
+    createdAt: "2024-04-01"
   },
   {
     id: "smart-bed-1",
@@ -27,7 +19,8 @@ export const products: Product[] = [
     price: 499999,
     images: ["/products/smart-bed.jpg"],
     description: "Advanced sleep system with temperature regulation and sleep tracking",
-    features: ["Sleep Tracking", "Temperature Control", "Auto Adjustment", "Smart Wake"]
+    features: ["Sleep Tracking", "Temperature Control", "Auto Adjustment", "Smart Wake"],
+    createdAt: "2024-04-01"
   },
   {
     id: "smart-light-1",
@@ -36,7 +29,8 @@ export const products: Product[] = [
     price: 49999,
     images: ["/products/smart-light.jpg"],
     description: "Color-changing LED panel with voice and app control",
-    features: ["Voice Control", "16M Colors", "Schedule", "Music Sync"]
+    features: ["Voice Control", "16M Colors", "Schedule", "Music Sync"],
+    createdAt: "2024-04-01"
   },
   {
     id: "smart-kitchen-1",
@@ -45,7 +39,8 @@ export const products: Product[] = [
     price: 899999,
     images: ["/products/smart-fridge.jpg"],
     description: "Connected refrigerator with inventory tracking and recipe suggestions",
-    features: ["Inventory Tracking", "Recipe Suggestions", "Energy Efficient", "Touch Screen"]
+    features: ["Inventory Tracking", "Recipe Suggestions", "Energy Efficient", "Touch Screen"],
+    createdAt: "2024-04-01"
   },
   {
     id: "smart-decor-1",
@@ -54,7 +49,8 @@ export const products: Product[] = [
     price: 79999,
     images: ["/products/digital-frame.jpg"],
     description: "High-resolution digital frame with art subscription service",
-    features: ["4K Display", "Art Library", "Motion Sensor", "Auto Brightness"]
+    features: ["4K Display", "Art Library", "Motion Sensor", "Auto Brightness"],
+    createdAt: "2024-04-01"
   },
   {
     id: "smart-appliance-1",
@@ -63,7 +59,8 @@ export const products: Product[] = [
     price: 599999,
     images: ["/products/smart-washer.jpg"],
     description: "WiFi-enabled washer with remote control and notifications",
-    features: ["Remote Control", "Auto Detergent", "Energy Monitor", "Smart Schedule"]
+    features: ["Remote Control", "Auto Detergent", "Energy Monitor", "Smart Schedule"],
+    createdAt: "2024-04-01"
   }
 ];
 
@@ -72,15 +69,7 @@ export function getProductsByCategory(categoryId: string): Product[] {
 }
 
 export function getFeaturedProducts(): Product[] {
-  const featured: Product[] = [];
-  const categoryIds = ["smart-furniture", "bedding-bath", "smart-lighting"];
-  categoryIds.forEach(categoryId => {
-    const categoryProducts = getProductsByCategory(categoryId);
-    if (categoryProducts.length > 0) {
-      featured.push(categoryProducts[0]);
-    }
-  });
-  return featured;
+  return products.filter(product => product.isOnSale).slice(0, 8);
 }
 
 export function getProductById(id: string): Product | undefined {
@@ -90,5 +79,5 @@ export function getProductById(id: string): Product | undefined {
 export function getRelatedProducts(categoryId: string, excludeId?: string): Product[] {
   return products
     .filter(product => product.category === categoryId && product.id !== excludeId)
-    .slice(0, 3);
+    .slice(0, 4);
 } 

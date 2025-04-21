@@ -5,17 +5,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Star, Heart, Eye } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { type Product } from '@/types/product'
+import { Button } from '../../components/ui/button'
+import { cn } from '../../lib/utils'
+import { type Product } from '../../../types/product'
 
 interface ProductCardProps {
     product: Product
     onQuickView?: (product: Product) => void
     className?: string
+    index?: number
 }
 
-export function ProductCard({ product, onQuickView, className }: ProductCardProps) {
+export function ProductCard({ product, onQuickView, className, index }: ProductCardProps) {
     const [isHovered, setIsHovered] = useState(false)
     const [isFavorited, setIsFavorited] = useState(false)
 
@@ -48,7 +49,7 @@ export function ProductCard({ product, onQuickView, className }: ProductCardProp
                 )}>
                     <Button
                         variant="outline"
-                        size="icon"
+                        size="sm"
                         className={cn(
                             "bg-white/80 backdrop-blur-sm hover:bg-white transition-all duration-300",
                             isFavorited && "text-red-500"
@@ -62,7 +63,10 @@ export function ProductCard({ product, onQuickView, className }: ProductCardProp
                         <Button
                             variant="outline"
                             size="sm"
-                            className="bg-white/80 backdrop-blur-sm hover:bg-white transition-all duration-300 gap-2"
+                            className={cn(
+                                "bg-white/80 backdrop-blur-sm hover:bg-white transition-all duration-300 gap-2",
+                                isFavorited && "text-red-500"
+                            )}
                             onClick={() => onQuickView(product)}
                         >
                             <Eye className="h-4 w-4" />

@@ -37,7 +37,10 @@ export interface CheckoutData {
 
 export interface CartItem {
     id: string
-    quantity: number
+    productId: string
+    name: string
     price: number
-    product: Product
+    quantity: number
+    image?: string
+    product?: Product
 } 

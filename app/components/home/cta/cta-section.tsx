@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
+import { Button } from "../../../components/ui/button"
 import { ArrowRight, Phone, Clock, HeadphonesIcon, CreditCard } from "lucide-react"
 import Link from 'next/link'
 

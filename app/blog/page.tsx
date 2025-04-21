@@ -3,11 +3,10 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { ArrowRight, Clock, ImageIcon, Search, CalendarDays, TrendingUp, Users, BookOpen } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from "../components/ui/button"
+import { Input } from "../components/ui/input"
 import Link from "next/link"
-import { spacing, theme } from "@/lib/constants"
-import { containerAnimation, fadeIn } from "@/lib/animations"
+import { containerAnimation, fadeIn } from "../lib/animations"
 import { useState } from "react"
 
 // First define the BlogPost type
@@ -141,11 +140,15 @@ export default function BlogPage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="max-w-3xl"
                     >
-                        <span className="inline-flex items-center gap-2 text-sm font-medium px-3 py-1
-                            bg-[#E4A853]/10 text-[#E4A853] rounded-full mb-6">
+                        <motion.div
+                            variants={fadeIn}
+                            initial="hidden"
+                            animate="show"
+                            className="flex items-center gap-2"
+                        >
                             <span className="w-2 h-2 rounded-full bg-[#E4A853] animate-pulse" />
-                            Latest Updates
-                        </span>
+                            <span className="text-sm text-gray-600">Latest Updates</span>
+                        </motion.div>
                         <h1 className="text-5xl sm:text-6xl font-bold mb-6 leading-tight">
                             Insights for
                             <span className="block text-[#E4A853]">Smarter Living</span>
@@ -277,8 +280,7 @@ export default function BlogPage() {
                     <motion.div
                         variants={containerAnimation}
                         initial="hidden"
-                        whileInView="show"
-                        viewport={{ once: true }}
+                        animate="show"
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                     >
                         {filteredPosts.map((post) => (

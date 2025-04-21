@@ -1,8 +1,9 @@
 import { motion } from "framer-motion"
 import Image from 'next/image'
-import { Button } from "@/components/ui/button"
+import { Button } from "../../../components/ui/button"
 import { ArrowRight } from "lucide-react"
 import Link from 'next/link'
+import { slideIn, fadeIn } from "../../../lib/animations"
 
 export const EnergyBillsSection = () => {
     return (
@@ -16,39 +17,28 @@ export const EnergyBillsSection = () => {
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                     {/* Left Content with Stagger */}
                     <motion.div
-                        initial={{ x: -100, opacity: 0 }}
-                        whileInView={{ x: 0, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
                         className="flex-1 max-w-2xl"
                     >
-                        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-6 leading-none">
-                            Betadomot
-                            <br />
-                            <span className="text-[#E4A853]">pay less energy bills.</span>
-                        </h2>
-                        <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-lg leading-relaxed">
-                            Tired of outrageous energy bills? Our solutions help Nigerian homes save
-                            <span className="text-[#E4A853] font-semibold"> millions yearly</span> while enjoying
-                            <span className="text-black font-semibold"> constant power supply</span>.
-                        </p>
-                        <Link href="/learn">
-                            <Button
-                                className="group bg-black hover:bg-black/90 text-white px-8 h-14 
-                  text-base transition-all duration-300 rounded-full"
-                            >
-                                Learn how
-                                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                        <div className="text-center">
+                            <h2 className="text-3xl font-bold mb-4">Take Control of Your Energy Bills</h2>
+                            <p className="text-lg mb-8 max-w-2xl mx-auto">
+                                Discover how smart home technology can help you reduce your energy consumption and save money.
+                            </p>
+                            <Button size="lg" className="bg-primary hover:bg-primary/90">
+                                Get Started
                             </Button>
-                        </Link>
+                        </div>
                     </motion.div>
 
                     {/* Right Image with Float Animation */}
                     <motion.div
-                        initial={{ x: 100, opacity: 0 }}
-                        whileInView={{ x: 0, opacity: 1 }}
+                        variants={slideIn}
+                        initial="hidden"
+                        whileInView="show"
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
                         className="flex-1 relative w-full aspect-square lg:aspect-auto lg:h-[600px]"
                     >
                         <motion.div

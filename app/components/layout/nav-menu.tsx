@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { categories } from "@/data/categories"
+import { categories } from "../../data/categories"
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -11,7 +11,7 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+} from "../../components/ui/navigation-menu"
 
 export function NavMenu() {
     return (

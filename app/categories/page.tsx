@@ -1,18 +1,18 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Category } from '@/types'
-import { getMainCategories } from '@/data/categories'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { MainCategory } from '../data/categories'
+import { getMainCategories } from '../data/categories'
+import { LoadingSpinner } from '../components/ui/loading-spinner'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from "../components/ui/input"
+import { Button } from "../components/ui/button"
 
 export default function CategoriesPage() {
-    const [categories, setCategories] = useState<Category[]>([])
+    const [categories, setCategories] = useState<MainCategory[]>([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {

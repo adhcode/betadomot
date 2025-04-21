@@ -1,4 +1,4 @@
-import { colors, spacing } from "@/lib/styles"
+import { colors, spacing } from "../../lib/styles"
 
 export const sectionHeader = (title: string, subtitle: string, color: "light" | "dark" = "dark") => {
   const textColor = color === "light" ? "text-white" : `text-[${colors.dark}]`

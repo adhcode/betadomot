@@ -1,14 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { useCart } from '@/hooks/use-cart'
-import { handleGuestCheckout } from '@/lib/checkout'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { useCart } from '../../hooks/use-cart'
+import { handleGuestCheckout } from '../../lib/checkout'
+import { Button } from '../../components/ui/button'
+import { Input } from '../../components/ui/input'
 import { toast } from 'sonner'
+import type { CartItem } from '../../hooks/use-cart'
 
 export function GuestCheckoutForm() {
-    const { items, clearCart } = useCart()
+    const { cart, clearCart } = useCart()
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('')
 
@@ -19,7 +20,7 @@ export function GuestCheckoutForm() {
         try {
             const formData = new FormData(e.currentTarget)
             const checkoutData = {
-                email: email || undefined, // Make email optional
+                email: email || undefined,
                 shipping_address: {
                     name: formData.get('name') as string,
                     street: formData.get('street') as string,
@@ -28,7 +29,7 @@ export function GuestCheckoutForm() {
                     postal_code: formData.get('postal_code') as string,
                     phone: formData.get('phone') as string
                 },
-                items
+                items: cart
             }
 
             const result = await handleGuestCheckout(checkoutData)

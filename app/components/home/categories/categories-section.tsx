@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { categories } from '@/data/categories'
+import { categories } from '../../../data/categories'
 import { ArrowRight } from 'lucide-react'
 
 export function CategoriesSection() {

@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
-import { ProductCard } from '@/components/products/product-card'
+import { Button } from '../../../components/ui/button'
+import { ProductCard } from '../../../components/products/product-card'
 import { useState } from 'react'
-import { type Product } from '@/types/product'
+import { type Product } from '../../../../types/product'
 import { Flame, Star, Clock } from 'lucide-react'
 
 interface FeaturedProductsProps {
@@ -23,7 +23,7 @@ export function FeaturedProducts({ products, onQuickView }: FeaturedProductsProp
             // Show products created in the last 30 days
             const thirtyDaysAgo = new Date()
             thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-            return new Date(product.createdAt) > thirtyDaysAgo
+            return new Date(product.createdAt || new Date().toISOString()) > thirtyDaysAgo
         }
     }).slice(0, 8) // Show max 8 products
 

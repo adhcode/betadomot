@@ -1,8 +1,9 @@
 'use client'
 
 import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { containerAnimation, fadeIn, slideIn, scaleIn } from "../../lib/animations"
+import { Card } from "../components/ui/card"
+import { Button } from "../components/ui/button"
 import {
     Home, Palette, Lightbulb, Thermometer,
     ArrowRight, Wrench, Ruler, Leaf,
@@ -12,10 +13,10 @@ import {
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from './home-improvement.module.css'
-import { Input } from "@/components/ui/input"
+import { Input } from "../components/ui/input"
 import { toast } from 'sonner'
-import { BeforeAfterData } from '@/types/home-improvement'
-import { getProductById } from '@/data/products'
+import { BeforeAfterData } from '../../types/home-improvement'
+import { getProductById } from '../../data/products'
 
 // Home Improvement Tips
 const improvementTips = [
@@ -674,7 +675,7 @@ export default function HomeImprovementPage() {
                                                             <div className="relative w-12 h-12 rounded-md overflow-hidden 
                                                         flex-shrink-0">
                                                                 <Image
-                                                                    src={product.image}
+                                                                    src={product.images[0] || '/images/placeholder.jpg'}
                                                                     alt={product.name}
                                                                     fill
                                                                     className="object-cover"

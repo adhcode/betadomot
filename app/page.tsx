@@ -10,11 +10,11 @@ import { SecuritySection } from "./components/home/security/security-section"
 import { HomeImprovementSection } from "./components/home/home-improvement/home-improvement-section"
 import { BlogSection } from "./components/blog/blog-section"
 import { NewsletterSection } from "./components/home/newsletter/newsletter-section"
-import { type Product } from '@/types/product'
-import { products as baseProducts } from '@/data/products'
+import { type Product } from '../types/product'
+import { products as baseProducts } from '../data/products'
 import { ProductShowcase } from './components/home/product-showcase/product-showcase'
 import { ArrowRight, Clock, TrendingUp, Star, Sparkles, Shield, Zap, Home, Sun } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from './components/ui/badge'
 
 const products: Product[] = baseProducts.map(product => ({
   ...product,

@@ -1,15 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { PageHeader } from '@/components/ui/page-header'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { ConsumptionCalculator } from '@/app/learn/components/consumption-calculator'
+import { PageHeader } from '../../components/ui/page-header'
+import { Card } from '../../components/ui/card'
+import { Button } from '../../components/ui/button'
+import { Input } from '../../components/ui/input'
 import { Sun, Battery, Zap, ArrowRight, Check, Calculator, LightbulbOff, Coins, Leaf } from 'lucide-react'
-import { SolarCalculator } from '@/components/services/solar-calculator'
-import { ConsultationForm } from '@/components/services/consultation-form'
-import { FinancingOptions } from '@/components/services/financing-options'
+import { SolarCalculator } from '../../components/services/solar-calculator'
+import { ConsultationForm } from '../../components/services/consultation-form'
+import { FinancingOptions } from '../../components/services/financing-options'
 
 export default function SolarInstallationPage() {
     const [showConsultation, setShowConsultation] = useState(false)

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { Badge } from './badge'
-import { formatPrice } from '@/lib/utils'
+import { formatPrice } from '../../lib/utils'
 
 interface ProductCardProps {
     product: {

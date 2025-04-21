@@ -4,9 +4,9 @@ import * as React from "react"
 import Link from "next/link"
 import { Menu } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { Button } from "../../components/ui/button"
+import { Sheet, SheetContent, SheetTrigger } from "../../components/ui/sheet"
+import { ScrollArea } from "../../components/ui/scroll-area"
 
 export function MobileNav() {
     const [open, setOpen] = React.useState(false)

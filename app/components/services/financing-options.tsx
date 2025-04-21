@@ -1,7 +1,7 @@
 'use client'
 
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card } from "../../components/ui/card"
+import { Button } from "../../components/ui/button"
 import { Calculator, CreditCard, Building2, ArrowRight } from 'lucide-react'
 
 export function FinancingOptions() {
@@ -104,7 +104,7 @@ export function FinancingOptions() {
                 <p className="text-sm text-gray-600 mb-4">
                     All financing options subject to approval. Terms and conditions apply.
                 </p>
-                <Button variant="link" className="text-[#003366]">
+                <Button variant="ghost" className="text-[#003366]">
                     Download Financing Guide
                 </Button>
             </div>

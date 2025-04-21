@@ -1,284 +1,265 @@
-export interface ProductEfficiency {
-    rating: "A+++" | "A++" | "A+" | "A" | "B"
-    seer?: number
-    annualConsumption?: number
-    noiseLevel?: number
-    powerConsumption?: number
-    standbyPower?: number
-}
-
-export interface Product {
-    id: string
-    name: string
-    price: number
-    description: string
-    category: string
-    subCategory: string
-    image: string
-    efficiency?: ProductEfficiency
-    specs: Record<string, string | number>
-    features: string[]
-    relatedCategories: string[] // For recommending in learn pages
-    savings?: string
-    rating?: number
-    specifications?: Record<string, string | number>
-    details?: {
-        overview: string
-        highlights: string[]
-        technicalDetails: string[]
-    }
-    relatedProducts?: string[]
-    stock?: number
-}
+import { Product, ProductEfficiency } from '../types/product';
 
 // Mock products data - will be replaced with database data
 export const products: Product[] = [
     {
-        id: "ac-1",
-        name: "1.5HP Inverter Split AC",
-        price: 275000,
-        description: "Energy-efficient inverter AC with smart control",
-        category: "cooling",
-        subCategory: "ac",
-        image: "/images/products/inverter-ac.jpg",
+        id: 'ac-1',
+        name: 'LG Dual Inverter Air Conditioner',
+        description: 'Energy-efficient split AC with smart features',
+        price: 450000,
+        originalPrice: 500000,
+        discount: 10,
+        images: ['/images/products/ac-1.jpg'],
+        category: 'appliances',
+        subcategory: 'air-conditioners',
+        features: ['Smart Inverter', 'WiFi Control', 'Low Noise'],
+        specifications: {
+            capacity: '1.5HP',
+            type: 'Split',
+            efficiency: 'A+++',
+            warranty: '5 years'
+        },
+        rating: 4.8,
+        reviewCount: 120,
+        stock: 15,
+        inStock: true,
+        brand: 'LG',
+        warranty: '5 years',
+        isOnSale: true,
+        dealType: 'Sale',
+        tags: ['air-conditioner', 'smart', 'inverter'],
+        createdAt: '2024-01-15',
         efficiency: {
-            rating: "A+++",
-            seer: 21,
-            annualConsumption: 850,
-            noiseLevel: 21
-        },
-        specs: {
-            power: "1.5 HP",
-            type: "Split Unit",
-            coolant: "R32",
-            coverage: "18-24 sqm"
-        },
-        features: [
-            "WiFi Control",
-            "Sleep Mode",
-            "Auto Restart",
-            "Timer Function"
-        ],
-        relatedCategories: ["temperature", "energy-savings"]
+            rating: 'A+++',
+            seer: 4.5,
+            annualConsumption: 1200,
+            noiseLevel: 19
+        }
     },
     {
-        id: "inv-1",
-        name: "5kVA Hybrid Inverter",
-        price: 450000,
-        description: "Pure sine wave inverter with solar charging",
-        category: "power",
-        subCategory: "inverter",
-        image: "/images/products/hybrid-inverter.jpg",
-        specs: {
-            capacity: "5kVA",
-            type: "Hybrid",
-            efficiency: "98%",
+        id: "ac-2",
+        name: "2HP Window AC",
+        description: "Powerful window air conditioner",
+        price: 180000,
+        originalPrice: 200000,
+        discount: 10,
+        images: ["/images/ac/2hp-window.jpg"],
+        category: "air-conditioners",
+        subcategory: "window",
+        features: ["Energy saver", "Sleep mode", "Auto restart"],
+        specifications: {
+            capacity: "2HP",
+            type: "Window",
+            warranty: "1 year"
+        },
+        rating: 4.5,
+        reviewCount: 78,
+        inStock: true,
+        brand: "CoolTech",
+        warranty: "1 year",
+        powerRating: "2HP",
+        dimensions: "600x400x300mm",
+        weight: "45kg",
+        isOnSale: false,
+        tags: ["ac", "cooling", "window"],
+        createdAt: "2024-01-02",
+        updatedAt: "2024-01-02"
+    },
+    {
+        id: "fan-1",
+        name: "Smart Ceiling Fan",
+        description: "WiFi enabled ceiling fan with remote control",
+        price: 45000,
+        originalPrice: 50000,
+        discount: 10,
+        images: ["/images/fans/smart-ceiling.jpg"],
+        category: "fans",
+        subcategory: "ceiling",
+        features: ["WiFi control", "Timer function", "6 speeds"],
+        specifications: {
+            size: "52 inches",
+            type: "Ceiling",
             warranty: "2 years"
         },
-        features: [
-            "MPPT Charging",
-            "LCD Display",
-            "Mobile Monitoring",
-            "Overload Protection"
-        ],
-        relatedCategories: ["backup-power", "solar-power", "energy-savings"]
-    },
-    {
-        id: 'luminous-5kva-inverter',
-        name: 'Luminous 5KVA Inverter',
-        description: 'High-performance inverter perfect for homes and small offices',
-        price: 450000,
-        category: 'power',
-        subCategory: 'inverter',
-        image: '/products/inverter-1.jpg',
         rating: 4.8,
-        features: [
-            'Pure Sine Wave Output',
-            'LCD Display',
-            'Intelligent Battery Management',
-            'Overload Protection'
-        ],
-        specs: {
-            capacity: '5KVA',
-            voltage: '24V',
-            efficiency: '98%'
-        },
-        relatedCategories: ['backup-power', 'inverters'],
-        savings: '₦25,000/month',
+        reviewCount: 120,
+        inStock: true,
+        brand: "AirFlow",
+        warranty: "2 years",
+        powerRating: "60W",
+        dimensions: "52 inches",
+        weight: "8kg",
+        isOnSale: true,
+        dealType: "Sale",
+        tags: ["fan", "cooling", "smart"],
+        createdAt: "2024-01-02",
+        updatedAt: "2024-01-02"
+    },
+    {
+        id: "fan-2",
+        name: "Standing Fan",
+        description: "Powerful standing fan with oscillation",
+        price: 25000,
+        originalPrice: 30000,
+        discount: 17,
+        images: ["/images/fans/standing.jpg"],
+        category: "fans",
+        subcategory: "standing",
+        features: ["3 speeds", "Oscillation", "Timer"],
         specifications: {
-            capacity: '5KVA',
-            voltage: '24V',
-            efficiency: '98%',
-            chargingCurrent: '60A',
-            warranty: '2 years'
+            size: "16 inches",
+            type: "Standing",
+            warranty: "1 year"
         },
-        details: {
-            overview: 'The Luminous 5KVA Inverter is designed for Nigerian homes...',
-            highlights: [
-                'Fast charging technology',
-                'Wide operating temperature range',
-                'Compatible with all battery types'
-            ],
-            technicalDetails: [
-                'Input Voltage: 140V-270V AC',
-                'Output Voltage: 220V ± 2%',
-                'Frequency: 50Hz ± 0.5Hz'
-            ]
-        },
-        relatedProducts: ['tubular-battery-200ah', 'smart-battery-monitor'],
-        stock: 15
+        rating: 4.3,
+        reviewCount: 65,
+        inStock: true,
+        brand: "AirFlow",
+        warranty: "1 year",
+        powerRating: "45W",
+        dimensions: "16 inches",
+        weight: "5kg",
+        isOnSale: true,
+        dealType: "Sale",
+        tags: ["fan", "cooling", "standing"],
+        createdAt: "2024-01-02",
+        updatedAt: "2024-01-02"
     },
     {
-        id: 'solar-2kw-package',
-        name: '2KW Complete Solar System',
-        description: 'Complete solar power system with panels, batteries, and inverter',
-        price: 1250000,
-        image: '/products/solar-1.jpg',
+        id: "light-1",
+        name: "Smart LED Bulb",
+        description: "Color changing smart LED bulb",
+        price: 15000,
+        originalPrice: 18000,
+        discount: 17,
+        images: ["/images/lights/smart-bulb.jpg"],
+        category: "lighting",
+        subcategory: "bulbs",
+        features: ["16M colors", "Voice control", "Scheduling"],
+        specifications: {
+            wattage: "9W",
+            type: "LED",
+            warranty: "2 years"
+        },
         rating: 4.9,
-        category: 'power',
-        subCategory: 'solar',
-        features: [
-            '2KW Solar Panels',
-            '5KVA Hybrid Inverter',
-            '200AH Lithium Batteries',
-            'Complete Installation'
-        ],
-        savings: '₦45,000/month',
-        specs: {
-            capacity: '2KW',
-            panels: '4 x 500W',
-            battery: '5.12KWh',
-            efficiency: '21%'
-        },
-        details: {
-            overview: 'Complete solar solution designed for Nigerian homes...',
-            highlights: [
-                'Zero electricity bills',
-                'Premium tier-1 panels',
-                'Professional installation'
-            ],
-            technicalDetails: [
-                'Daily Production: 8-10KWh',
-                'Battery Capacity: 5.12KWh',
-                'Panel Efficiency: 21%'
-            ]
-        },
-        relatedProducts: ['smart-solar-monitor', 'power-optimizer'],
-        stock: 5,
-        relatedCategories: ['solar-power', 'backup-power', 'energy-savings']
+        reviewCount: 210,
+        inStock: true,
+        brand: "LumiTech",
+        warranty: "2 years",
+        powerRating: "9W",
+        dimensions: "60mm x 110mm",
+        weight: "0.1kg",
+        isOnSale: true,
+        dealType: "Sale",
+        tags: ["light", "smart", "led"],
+        createdAt: "2024-01-02",
+        updatedAt: "2024-01-02"
     },
     {
-        id: 'smart-bulb-pack',
-        name: 'Smart LED Bulb 4-Pack',
-        description: 'WiFi-enabled smart LED bulbs with app control',
+        id: "light-2",
+        name: "LED Strip Light",
+        description: "RGB LED strip with remote control",
         price: 12000,
-        image: '/products/smart-bulb.jpg',
+        originalPrice: 15000,
+        discount: 20,
+        images: ["/images/lights/led-strip.jpg"],
+        category: "lighting",
+        subcategory: "strips",
+        features: ["RGB colors", "Remote control", "Cuttable"],
+        specifications: {
+            length: "5m",
+            type: "LED Strip",
+            warranty: "1 year"
+        },
+        rating: 4.6,
+        reviewCount: 95,
+        inStock: true,
+        brand: "LumiTech",
+        warranty: "1 year",
+        powerRating: "24W",
+        dimensions: "5m x 10mm",
+        weight: "0.2kg",
+        isOnSale: true,
+        dealType: "Sale",
+        tags: ["light", "led", "strip"],
+        createdAt: "2024-01-02",
+        updatedAt: "2024-01-02"
+    },
+    {
+        id: "security-1",
+        name: "Smart Doorbell",
+        description: "Video doorbell with motion detection",
+        price: 35000,
+        originalPrice: 40000,
+        discount: 13,
+        images: ["/images/security/doorbell.jpg"],
+        category: "security",
+        subcategory: "doorbells",
+        features: ["1080p video", "Motion detection", "Two-way audio"],
+        specifications: {
+            resolution: "1080p",
+            type: "Doorbell",
+            warranty: "1 year"
+        },
         rating: 4.7,
-        category: 'smart-devices',
-        subCategory: 'lighting',
-        features: [
-            'App Control',
-            'Voice Command Support',
-            'Scheduling',
-            'Energy Monitoring'
-        ],
-        savings: '₦2,000/month',
-        specs: {
-            wattage: '9W',
-            lumens: '800lm',
-            color: 'RGB + White',
-            lifespan: '25000 hours'
-        },
-        details: {
-            overview: 'Transform your lighting with smart LED bulbs...',
-            highlights: [
-                'Works with Alexa & Google Home',
-                'Energy usage tracking',
-                'Automated schedules'
-            ],
-            technicalDetails: [
-                'Input: 220-240V',
-                'Beam Angle: 270°',
-                'CRI: >80'
-            ]
-        },
-        relatedProducts: ['smart-strip', 'motion-sensor'],
-        stock: 50,
-        relatedCategories: ['smart-home', 'energy-savings', 'lighting']
+        reviewCount: 150,
+        inStock: true,
+        brand: "SecureHome",
+        warranty: "1 year",
+        powerRating: "5W",
+        dimensions: "120mm x 45mm",
+        weight: "0.3kg",
+        isOnSale: true,
+        dealType: "Sale",
+        tags: ["security", "camera", "doorbell"],
+        createdAt: "2024-01-02",
+        updatedAt: "2024-01-02"
     },
     {
-        id: "portable-ac",
-        name: "1HP Portable AC",
-        price: 185000,
-        description: "Compact and mobile cooling solution",
-        category: "cooling",
-        subCategory: "portable-ac",
-        image: "/images/products/portable-ac.jpg",
-        efficiency: {
-            rating: "A++",
-            seer: 16,
-            annualConsumption: 650,
-            noiseLevel: 25
+        id: "security-2",
+        name: "Security Camera",
+        description: "Outdoor security camera with night vision",
+        price: 45000,
+        originalPrice: 50000,
+        discount: 10,
+        images: ["/images/security/camera.jpg"],
+        category: "security",
+        subcategory: "cameras",
+        features: ["1080p video", "Night vision", "Motion alerts"],
+        specifications: {
+            resolution: "1080p",
+            type: "Camera",
+            warranty: "1 year"
         },
-        specs: {
-            power: "1 HP",
-            type: "Portable",
-            coolant: "R32",
-            coverage: "12-16 sqm"
-        },
-        features: [
-            "Mobile Design",
-            "Remote Control",
-            "24-Hour Timer",
-            "Self-Evaporative System"
-        ],
-        relatedCategories: ["temperature", "energy-savings"]
-    },
-    {
-        id: "battery-200ah",
-        name: "200AH Deep Cycle Battery",
-        price: 320000,
-        description: "Long-lasting lithium battery for power backup",
-        category: "power",
-        subCategory: "battery",
-        image: "/images/products/battery.jpg",
-        specs: {
-            capacity: "200AH",
-            type: "Lithium Iron Phosphate",
-            voltage: "12V",
-            cycles: "4000+"
-        },
-        features: [
-            "10-Year Lifespan",
-            "Built-in BMS",
-            "Temperature Protection",
-            "Low Self-Discharge"
-        ],
-        relatedCategories: ["backup-power", "solar-power"]
-    },
-    // Add more products...
-]
+        rating: 4.8,
+        reviewCount: 180,
+        inStock: true,
+        brand: "SecureHome",
+        warranty: "1 year",
+        powerRating: "8W",
+        dimensions: "100mm x 100mm x 100mm",
+        weight: "0.5kg",
+        isOnSale: true,
+        dealType: "Sale",
+        tags: ["security", "camera", "outdoor"],
+        createdAt: "2024-01-02",
+        updatedAt: "2024-01-02"
+    }
+];
 
-export const getProductById = (id: string): Product | undefined => {
-    return products.find(product => product.id === id)
+export function getProductById(id: string): Product | undefined {
+    return products.find(product => product.id === id);
 }
 
-export const getProductsByCategory = (category: string): Product[] => {
-    if (category === 'all') return products
-    return products.filter(product => product.category === category)
+export function getProductsByCategory(category: string): Product[] {
+    return products.filter(product => product.category === category);
 }
 
-export const getRelatedProducts = (productId: string): Product[] => {
-    const product = getProductById(productId)
-    if (!product || !product.relatedProducts) return []
-    return product.relatedProducts
-        .map(id => getProductById(id))
-        .filter((p): p is Product => p !== undefined)
-}
-
-// Helper function to get products by related category
-export const getProductsByRelatedCategory = (category: string) => {
-    return products.filter(product => 
-        product.relatedCategories.includes(category)
-    )
+export function getRelatedProducts(product: Product): Product[] {
+    return products
+        .filter(p => 
+            p.id !== product.id && 
+            (p.category === product.category || p.subcategory === product.subcategory)
+        )
+        .slice(0, 4);
 } 
