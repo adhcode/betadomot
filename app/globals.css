@@ -29,9 +29,10 @@
   }
 
   /* Apply Ojuju font to all headings */
-  h1, h2, h3, h4, h5, h6 {
+  /* Removing this override to allow Lato font to work properly */
+  /* h1, h2, h3, h4, h5, h6 {
     font-family: 'Ojuju', sans-serif !important;
-  }
+  } */
 
   .dark {
     --background: 222.2 84% 4.9%;

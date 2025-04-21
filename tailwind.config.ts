@@ -6,14 +6,15 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{ts,tsx}",
   ],
   theme: {
   	extend: {
   		fontFamily: {
-  			sans: ['var(--font-raleway)', 'system-ui', 'sans-serif'],
+  			sans: ['var(--font-roboto-mono)', 'system-ui', 'sans-serif'],
   			outfit: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
   			raleway: ['var(--font-raleway)', 'system-ui', 'sans-serif'],
-  			ojuju: ['Ojuju', 'system-ui', 'sans-serif'],
+  			lato: ['var(--font-lato)', 'system-ui', 'sans-serif'],
   		},
   		colors: {
   			background: 'hsl(var(--background))',
@@ -61,7 +62,21 @@ const config: Config = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+  		keyframes: {
+  			"accordion-down": {
+  				from: { height: "0" },
+  				to: { height: "var(--radix-accordion-content-height)" },
+  			},
+  			"accordion-up": {
+  				from: { height: "var(--radix-accordion-content-height)" },
+  				to: { height: "0" },
+  			},
+  		},
+  		animation: {
+  			"accordion-down": "accordion-down 0.2s ease-out",
+  			"accordion-up": "accordion-up 0.2s ease-out",
+  		},
   	}
   },
   plugins: [require("tailwindcss-animate")],

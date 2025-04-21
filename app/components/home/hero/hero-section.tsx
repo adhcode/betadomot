@@ -21,7 +21,7 @@ export const HeroSection = () => {
             >
                 <div className="relative w-full h-full">
                     <Image
-                        src="/modern-living-room.jpg"
+                        src="/hero-home.jpeg"
                         alt="Modern Living Room"
                         fill
                         className="object-cover object-center brightness-90"
@@ -29,59 +29,61 @@ export const HeroSection = () => {
                         sizes="100vw"
                         quality={100}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50" />
+                    <div className="absolute " />
                 </div>
             </motion.div>
 
             {/* Hero Content with Stagger Animation */}
             <div className="relative z-10 h-full w-full">
-                <div className="container-max mx-auto pt-28 lg:pt-36 px-8 lg:px-12">
+                <div className="container-max mx-auto pt-[250px] lg:pt-[250px]  px-8 lg:px-12">
                     <motion.div
                         variants={fadeIn}
                         initial="hidden"
                         animate="show"
-                        className="max-w-2xl"
+                        className="w-full max-w-4xl px-4 sm:px-6 lg:px-8"
                     >
-                        <motion.h1
-                            variants={fadeIn}
-                            initial="hidden"
-                            animate="show"
-                            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight"
-                        >
-                            Discover Your
-                        </motion.h1>
-                        <motion.h1
-                            variants={fadeIn}
-                            initial="hidden"
-                            animate="show"
-                            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#E4A853] mb-6 leading-tight"
-                        >
-                            Dream Home
-                        </motion.h1>
+                        <div className="bg-white/90 p-6 sm:p-8 lg:p-12 rounded-lg w-full">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-6">
+                                <motion.h1
+                                    variants={fadeIn}
+                                    initial="hidden"
+                                    animate="show"
+                                    className="text-5xl sm:text-6xl lg:text-7xl font-bold text-black leading-tight whitespace-nowrap font-roboto-mono"
+                                    suppressHydrationWarning
+                                >
+                                    your home,
+                                </motion.h1>
+                                <motion.h1
+                                    variants={fadeIn}
+                                    initial="hidden"
+                                    animate="show"
+                                    className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#E4A853] leading-tight whitespace-nowrap font-roboto-mono"
+                                >
+                                    only better
+                                </motion.h1>
+                            </div>
 
-                        <motion.p
-                            variants={fadeIn}
-                            initial="hidden"
-                            animate="show"
-                            className="text-lg text-white/90 mb-8"
-                        >
-                            Transform your space with our curated collection of premium furniture, decor, and smart home solutions. Quality craftsmanship, timeless design, delivered to your doorstep.
-                        </motion.p>
+                            <motion.p
+                                variants={fadeIn}
+                                initial="hidden"
+                                animate="show"
+                                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E4A853] mb-12"
+                            >
+                                everything you need to love your space
+                            </motion.p>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 1.4 }}
-                            className="flex gap-4 items-center"
-                        >
-                            <Button size="lg" className="bg-[#E4A853] hover:bg-[#E4A853]/90 text-white">
-                                <ShoppingBag className="mr-2 h-5 w-5" />
-                                Shop Now
-                            </Button>
-                            <Button variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10">
-                                View Collections <ArrowRight className="ml-2 h-5 w-5" />
-                            </Button>
-                        </motion.div>
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 1.4 }}
+                                className="flex justify-center"
+                            >
+                                <Button size="lg" className="bg-transparent hover:bg-[#E4A853]/10 text-[#E4A853] border-2 border-[#E4A853] rounded-full font-semibold text-lg sm:text-xl px-12 py-8 whitespace-nowrap font-roboto-mono">
+                                    <ShoppingBag className="mr-3 h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0" />
+                                    shop now
+                                </Button>
+                            </motion.div>
+                        </div>
                     </motion.div>
                 </div>
             </div>
